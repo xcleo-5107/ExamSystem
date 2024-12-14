@@ -1,10 +1,13 @@
 package cn.edu.zjut.examsystem.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
@@ -13,23 +16,33 @@ import java.util.Objects;
 public class PoStudent {
     @Basic
     @Column(name = "student_name")
+    @NotBlank
     private String studentName;
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "student_id")
     private int studentId;
+
     @Basic
     @Column(name = "student_sex")
     private String studentSex;
+
     @Basic
     @Column(name = "major_num")
     private Integer majorNum;
+
     @Basic
     @Column(name = "credit")
     private Double credit;
+
     @Basic
     @Column(name = "semester")
     private String semester;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "students")
+    private Set<PoClazz> clazzes;
 
     @Override
     public boolean equals(Object o) {

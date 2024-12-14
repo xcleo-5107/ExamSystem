@@ -1,10 +1,13 @@
 package cn.edu.zjut.examsystem.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,6 +24,10 @@ public class PoTeacher {
     @Basic
     @Column(name = "teacher_sex")
     private String teacherSex;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "teachers")
+    @JsonIgnore
+    private Set<PoClazz> clazzes;
 
     @Override
     public boolean equals(Object o) {

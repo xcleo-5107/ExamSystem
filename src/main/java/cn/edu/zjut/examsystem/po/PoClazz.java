@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,6 +27,22 @@ public class PoClazz {
     @Basic
     @Column(name = "class_time")
     private String classTime;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(
+            name="class_student",
+            joinColumns = @JoinColumn(name="class_num"),
+            inverseJoinColumns = @JoinColumn(name="student_id")
+    )
+    private Set<PoStudent> students;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "class_teacher",
+            joinColumns = @JoinColumn(name = "class_num"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_num")
+    )
+    private Set<PoTeacher> teachers;
 
 
     @Override
