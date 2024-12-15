@@ -1,6 +1,7 @@
 package cn.edu.zjut.examsystem.po;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,12 +16,17 @@ public class PoStudentAccount {
     @Id
     @Column(name = "account_num")
     private int accountNum;
+
     @Basic
     @Column(name = "username")
+    @NotBlank
     private String username;
+
     @Basic
     @Column(name = "password_")
+    @NotBlank
     private String password;
+
     @Basic
     @Column(name = "student_id")
     private Integer studentId;

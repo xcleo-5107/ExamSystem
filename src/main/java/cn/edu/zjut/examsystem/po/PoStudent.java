@@ -26,6 +26,7 @@ public class PoStudent {
 
     @Basic
     @Column(name = "student_sex")
+    @NotBlank
     private String studentSex;
 
     @Basic

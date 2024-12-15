@@ -2,6 +2,7 @@ package cn.edu.zjut.examsystem.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ import java.util.Set;
 public class PoTeacher {
     @Basic
     @Column(name = "teacher_name")
+    @NotBlank
     private String teacherName;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -28,6 +30,10 @@ public class PoTeacher {
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "teachers")
     @JsonIgnore
     private Set<PoClazz> clazzes;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "teachers")
+    @JsonIgnore
+    private Set<PoCourse> courses;
 
     @Override
     public boolean equals(Object o) {

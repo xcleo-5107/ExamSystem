@@ -1,10 +1,12 @@
 package cn.edu.zjut.examsystem.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,6 +35,15 @@ public class PoCourse {
     @Basic
     @Column(name = "semester")
     private String semester;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "course_teacher",
+            joinColumns = @JoinColumn(name = "course_num"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_num")
+    )
+    @JsonIgnore
+    private Set<PoTeacher> teachers;
 
     @Override
     public boolean equals(Object o) {
