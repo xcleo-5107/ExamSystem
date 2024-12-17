@@ -4,5 +4,5 @@ import cn.edu.zjut.examsystem.po.PoTeacher;
 
 public interface TeacherServiceImpl {
     PoTeacher findByTeacherNum(int num);
-    PoTeacher addTeacher(PoTeacher teacher);
+    Boolean addTeacher(PoTeacher teacher);
 }

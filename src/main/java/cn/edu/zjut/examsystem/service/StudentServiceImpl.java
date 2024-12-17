@@ -7,5 +7,5 @@ import java.util.Set;
 public interface StudentServiceImpl {
     PoStudent findByStudentId(int id);
     Set<PoStudent> findAllByStudentName(String name);
-    PoStudent addStudent(PoStudent student);
+    Boolean addStudent(PoStudent student);
 }

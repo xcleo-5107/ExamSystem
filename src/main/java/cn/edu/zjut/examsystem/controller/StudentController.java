@@ -19,22 +19,24 @@ public class StudentController {
 
     //POST方式一般用于添加
     //@RequestBody用于将传入的json响应接收
-    @PostMapping("/addStudent")
-    public ResponseMessage<PoStudent> addStudent(@Validated @RequestBody PoStudent student)
+    @PostMapping
+    public ResponseMessage<Boolean> addStudent(@Validated @RequestBody PoStudent student)
     {
         return ResponseMessage.success("添加新学生数据成功",studentService.addStudent(student));
     }
 
 
-    @GetMapping("/findByStudentId")
-    public ResponseMessage<PoStudent> findByStudentId(@RequestParam int id)
+    @GetMapping("/id/{id}")
+    public ResponseMessage<PoStudent> findByStudentId(@PathVariable(value = "id") int id)
     {
+        System.out.println("id:"+id);
         return ResponseMessage.success("id查询学生成功",studentService.findByStudentId(id));
     }
 
-    @GetMapping("/findAllByStudentName")
-    public ResponseMessage<Set<PoStudent>> findAllByStudentName(@RequestParam String name)
+    @GetMapping("/name/{name}")
+    public ResponseMessage<Set<PoStudent>> findAllByStudentName(@PathVariable("name") String name)
     {
+        System.out.println("name:"+name);
         return ResponseMessage.success("名字查询学生成功",studentService.findAllByStudentName(name));
     }
 }

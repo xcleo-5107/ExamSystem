@@ -1,9 +1,11 @@
 package cn.edu.zjut.examsystem.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -12,11 +14,11 @@ import java.util.Objects;
 @Table(name = "exam_module", schema = "exam_system")
 public class PoExamModule {
     @Basic
-    @Column(name = "exam_num")
-    private Integer examNum;
-    @Basic
     @Column(name = "exercise_type")
     private Integer exerciseType;
+    @Basic
+    @Column(name = "exam_num")
+    private Integer examNum;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "module_num")
@@ -25,17 +27,21 @@ public class PoExamModule {
     @Column(name = "module_in_exam_num")
     private Integer moduleInExamNum;
 
+    @OneToMany
+    @JoinColumn(name = "module_num")
+    @OrderBy("exerciseInModuleNum ASC")
+    private List<PoModuleExercise> moduleExercises;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PoExamModule that = (PoExamModule) o;
-        return moduleNum == that.moduleNum && Objects.equals(examNum, that.examNum) && Objects.equals(exerciseType, that.exerciseType) && Objects.equals(moduleInExamNum, that.moduleInExamNum);
+        return moduleNum == that.moduleNum  && Objects.equals(exerciseType, that.exerciseType) && Objects.equals(moduleInExamNum, that.moduleInExamNum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(examNum, exerciseType, moduleNum, moduleInExamNum);
+        return Objects.hash(exerciseType, moduleNum, moduleInExamNum);
     }
 }

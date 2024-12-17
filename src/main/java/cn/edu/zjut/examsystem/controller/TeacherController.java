@@ -19,16 +19,16 @@ public class TeacherController {
 
     //POST方式一般用于添加
     //@RequestBody用于将传入的json响应接收
-    @PostMapping("/addTeacher")
-    public ResponseMessage<PoTeacher> addTeacher(@Validated @RequestBody PoTeacher teacher)
+    @PostMapping
+    public ResponseMessage<Boolean> addTeacher(@Validated @RequestBody PoTeacher teacher)
     {
         return ResponseMessage.success("添加新教师数据成功",teacherService.addTeacher(teacher));
     }
 
 
-    @GetMapping("/findByTeacherNum")
-    public ResponseMessage<PoTeacher> findByTeacherNum(@RequestParam int num)
+    @GetMapping("/{id}")
+    public ResponseMessage<PoTeacher> findByTeacherNum(@RequestParam int id)
     {
-        return ResponseMessage.success("编号查询教师成功",teacherService.findByTeacherNum(num));
+        return ResponseMessage.success("编号查询教师成功",teacherService.findByTeacherNum(id));
     }
 }

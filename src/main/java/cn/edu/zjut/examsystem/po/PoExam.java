@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -24,6 +25,11 @@ public class PoExam {
     @Basic
     @Column(name = "is_released")
     private Byte isReleased;
+
+    @OneToMany
+    @JoinColumn(name = "exam_num")
+    @OrderBy("moduleInExamNum asc")
+    private List<PoExamModule> modules;
 
 
     @Override
