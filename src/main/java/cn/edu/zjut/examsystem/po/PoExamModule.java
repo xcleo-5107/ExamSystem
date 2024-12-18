@@ -16,9 +16,6 @@ public class PoExamModule {
     @Basic
     @Column(name = "exercise_type")
     private Integer exerciseType;
-    @Basic
-    @Column(name = "exam_num")
-    private Integer examNum;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "module_num")
@@ -27,7 +24,7 @@ public class PoExamModule {
     @Column(name = "module_in_exam_num")
     private Integer moduleInExamNum;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "module_num")
     @OrderBy("exerciseInModuleNum ASC")
     private List<PoModuleExercise> moduleExercises;

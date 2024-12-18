@@ -1,5 +1,6 @@
 package cn.edu.zjut.examsystem.service;
 
+import cn.edu.zjut.examsystem.dao.ExamDao;
 import cn.edu.zjut.examsystem.dao.ExerciseDao;
 import cn.edu.zjut.examsystem.po.PoExercise;
 import jakarta.persistence.EntityManager;
@@ -56,9 +57,12 @@ public class ExerciseService implements ExerciseServiceImpl {
 
     @Transactional
     @Override
-    public Boolean add(PoExercise exercise) {
+    public PoExercise add(PoExercise exercise) {
+        //添加新实体后因为缓存机制会导致返回的数据还没有同步,需要refresh刷新
         exerciseDao.save(exercise);
-        return true;
+        entityManager.refresh(exercise);
+
+        return exercise;
     }
 
     @Transactional

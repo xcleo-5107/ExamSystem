@@ -17,16 +17,18 @@ public class PoExam {
     @Column(name = "exam_num")
     private int examNum;
     @Basic
-    @Column(name = "course_num")
-    private Integer courseNum;
-    @Basic
-    @Column(name = "teacher_num")
-    private Integer teacherNum;
-    @Basic
     @Column(name = "is_released")
     private Byte isReleased;
 
-    @OneToMany
+    @OneToOne
+    @JoinColumn(name = "teacher_num")
+    private PoTeacher teacher;
+
+    @OneToOne
+    @JoinColumn(name = "course_num")
+    private PoCourse course;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "exam_num")
     @OrderBy("moduleInExamNum asc")
     private List<PoExamModule> modules;
@@ -37,11 +39,11 @@ public class PoExam {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PoExam poExam = (PoExam) o;
-        return examNum == poExam.examNum && Objects.equals(courseNum, poExam.courseNum) && Objects.equals(teacherNum, poExam.teacherNum) && Objects.equals(isReleased, poExam.isReleased);
+        return examNum == poExam.examNum && Objects.equals(isReleased, poExam.isReleased);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(examNum, courseNum, teacherNum, isReleased);
+        return Objects.hash(examNum,isReleased);
     }
 }

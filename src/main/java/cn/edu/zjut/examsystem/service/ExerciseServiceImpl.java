@@ -12,6 +12,6 @@ public interface ExerciseServiceImpl {
     PoExercise findById(int num);
     PoExercise alter(PoExercise exercise);
 
-    Boolean add(PoExercise exercise);
+    PoExercise add(PoExercise exercise);
     Boolean deleteById(int num);
 }

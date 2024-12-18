@@ -19,7 +19,7 @@ public class ExerciseController {
     private ExerciseService exerciseService;
 
     @PostMapping
-    public ResponseMessage<Boolean> add(@RequestBody PoExercise exercise)
+    public ResponseMessage<PoExercise> add(@RequestBody PoExercise exercise)
     {
         return new ResponseMessage<>(Code.SUCCESS,"添加成功", exerciseService.add(exercise));
     }
