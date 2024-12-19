@@ -20,11 +20,11 @@ public class PoExam {
     @Column(name = "is_released")
     private Byte isReleased;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "teacher_num")
     private PoTeacher teacher;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "course_num")
     private PoCourse course;
 

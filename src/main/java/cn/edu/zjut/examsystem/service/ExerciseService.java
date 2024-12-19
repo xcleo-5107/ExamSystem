@@ -37,7 +37,6 @@ public class ExerciseService implements ExerciseServiceImpl {
     public List<PoExercise> findAllByStr(String str)
     {
         return exerciseDao.findAllByExerciseInfoContainingOrExerciseProblemContainingOrExerciseAnswerContainingOrExerciseType_TypeNameContainingOrCourse_CourseName(str,str,str,str,str);
-        //return exerciseDao.findAllByExerciseAnswerContaining(str);
     }
 
     @Transactional(readOnly = true)
@@ -52,6 +51,7 @@ public class ExerciseService implements ExerciseServiceImpl {
         //save时,如果不存在则增加并将其添加到上下文中,而如果已经存在,则只更新,不会添加实体到上下文,refresh会报错
         //entityManager.refresh(exercise);
 
+        //不过通过这种方法返回的Po类是最新的,不用担心
         return exerciseDao.save(exercise);
     }
 

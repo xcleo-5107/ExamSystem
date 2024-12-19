@@ -20,7 +20,7 @@ public class PoModuleExercise {
     @Column(name = "exercise_in_module_num")
     private Integer exerciseInModuleNum;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "exercise_num")
     private PoExercise exercise;
 

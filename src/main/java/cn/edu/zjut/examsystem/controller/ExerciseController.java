@@ -47,7 +47,7 @@ public class ExerciseController {
     }
 
     @PutMapping
-    public ResponseMessage<PoExercise> alterExercise(@Validated @RequestBody PoExercise exercise)
+    public ResponseMessage<PoExercise> alter(@Validated @RequestBody PoExercise exercise)
     {
         return new ResponseMessage<>(Code.SUCCESS,"修改题目成功",exerciseService.alter(exercise));
     }

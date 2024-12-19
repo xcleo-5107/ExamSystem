@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -33,11 +35,11 @@ public class PoExercise {
     @Column(name = "exercise_difficulty")
     private Integer exerciseDifficulty;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="type_num")
     private PoExerciseType exerciseType;
 
-    @OneToOne
+    @ManyToOne
     @JsonIgnore
     @JoinColumn(name="course_num")
     private PoCourse course;
