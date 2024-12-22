@@ -3,7 +3,7 @@ CREATE TABLE major
 (
 major_name VARCHAR(60),
 major_num INT AUTO_INCREMENT PRIMARY KEY
-)
+);
 
 
 
@@ -14,7 +14,7 @@ CREATE TABLE review_type
 type_num INT AUTO_INCREMENT PRIMARY KEY,
 type_name VARCHAR(60)
 )
-
+;
 
 
 
@@ -31,10 +31,10 @@ semester VARCHAR(60)
 
 -- FOREIGN KEY (review_type) REFERENCES review_type(type_num),
 -- FOREIGN KEY (major_num) REFERENCES major(major_num)
-)
+);
 
 
-DROP TABLE IF EXISTS course_marjor
+DROP TABLE IF EXISTS course_marjor;
 CREATE TABLE course
 (
 major_num INT,
@@ -42,7 +42,7 @@ course_num INT
 
 -- FOREIGN KEY (major_num) REFERENCES major(major_num),
 -- FOREIGN KEY (course_num) REFERENCES course(course_num)
-)
+);
 
 
 DROP TABLE IF EXISTS class;
@@ -54,7 +54,7 @@ course_num INT,
 class_time VARCHAR(120)
 
 -- FOREIGN KEY (course_num) REFERENCES course(course_num)
-)
+);
 
 
 DROP TABLE IF EXISTS student;
@@ -68,7 +68,7 @@ credit float(10,1),
 semester VARCHAR(60)
 
 -- FOREIGN KEY (major_num) REFERENCES major(major_num)
-)
+);
 
 DROP TABLE IF EXISTS teacher;
 CREATE TABLE teacher
@@ -76,7 +76,7 @@ CREATE TABLE teacher
 teacher_name VARCHAR(60),
 teacher_num INT AUTO_INCREMENT PRIMARY KEY,
 teacher_sex VARCHAR(10)
-)
+);
 
 
 
@@ -88,7 +88,7 @@ teacher_num INT
 
 -- FOREIGN KEY (course_num) REFERENCES course(course_num),
 -- FOREIGN KEY (teacher_num) REFERENCES teacher(teacher_num)
-)
+);
 
 
 DROP TABLE IF EXISTS class_teacher;
@@ -99,7 +99,7 @@ teacher_num INT
 
 -- FOREIGN KEY (class_num) REFERENCES class(class_num),
 -- FOREIGN KEY (teacher_num) REFERENCES teacher(teacher_num)
-)
+);
 
 
 
@@ -111,7 +111,7 @@ student_id INT
 
 -- FOREIGN KEY (class_num) REFERENCES class(class_num),
 -- FOREIGN KEY (student_id) REFERENCES student(student_id)
-)
+);
 
 
 
@@ -120,7 +120,7 @@ CREATE TABLE exercise_type
 (
 type_num INT AUTO_INCREMENT PRIMARY KEY,
 type_name VARCHAR(60)
-)
+);
 
 
 
@@ -138,7 +138,7 @@ exercise_difficulty INT
 
 -- FOREIGN KEY (type_num) REFERENCES exercise_type(type_num),
 -- FOREIGN KEY (course_num) REFERENCES course(course_num)
-)
+);
 
 
 
@@ -152,7 +152,7 @@ is_released boolean
 
 -- FOREIGN KEY (course_num) REFERENCES course(course_num),
 -- FOREIGN KEY (teacher_num) REFERENCES teacher(teacher_num)
-)
+);
 
 
 DROP TABLE 	IF EXISTS exam_module;
@@ -165,7 +165,7 @@ module_in_exam_num INT
 
 -- FOREIGN KEY (exam_num) REFERENCES exam(exam_num),
 -- FOREIGN KEY (exercise_type) REFERENCES exercise_type(type_num)
-)
+);
 
 
 
@@ -179,7 +179,7 @@ exercise_in_module_num INT
 
 -- FOREIGN KEY (exercise_num) REFERENCES exercise(exercise_num),
 -- FOREIGN KEY (module_num) REFERENCES exam_module(module_num)
-)
+);
 
 
 DROP TABLE 	IF EXISTS exam_type;
@@ -187,8 +187,7 @@ CREATE TABLE exam_type
 (
 type_num INT AUTO_INCREMENT PRIMARY KEY,
 type_name VARCHAR(60)
-)
-
+);
 
 
 DROP TABLE 	IF EXISTS exam_scheme;
@@ -206,7 +205,7 @@ teacher_nums VARCHAR(3000)
 -- FOREIGN KEY (exam_num) REFERENCES exam(exam_num),
 -- FOREIGN KEY (course_num) REFERENCES course(course_num),
 -- FOREIGN KEY (exam_type) REFERENCES exam_type(type_num)
-)
+);
 
 
 DROP TABLE 	IF EXISTS answer_sheet_status_type;
@@ -214,7 +213,7 @@ CREATE TABLE answer_sheet_status_type
 (
 type_num INT AUTO_INCREMENT PRIMARY KEY,
 type_name VARCHAR(60)
-)
+);
 
 
 
@@ -230,7 +229,7 @@ sheet_status INT
 -- FOREIGN KEY (scheme_num) REFERENCES exam_scheme(scheme_num),
 -- FOREIGN KEY (student_id) REFERENCES student(student_id),
 -- FOREIGN KEY (sheet_status) REFERENCES answer_sheet_status_type(type_num)
-)
+);
 
 
 
@@ -246,7 +245,7 @@ answer VARCHAR(3000),
 score INT
 
 -- FOREIGN KEY (sheet_num) REFERENCES answer_sheet(sheet_num)
-)
+);
 
 
 
@@ -261,7 +260,7 @@ password_ VARCHAR(60) NOT NULL,
 student_id INT
 
 -- FOREIGN KEY (student_id) REFERENCES student(student_id)
-)
+);
 
 
 
@@ -275,7 +274,7 @@ password_ VARCHAR(60) NOT NULL,
 teacher_num INT
 
 -- FOREIGN KEY (teacher_num) REFERENCES teacher(teacher_num)
-)
+);
 
 
 
@@ -286,7 +285,7 @@ CREATE TABLE leader_account
 account_num INT AUTO_INCREMENT PRIMARY KEY,
 username VARCHAR(60),
 password_ VARCHAR(60) NOT NULL
-)
+);
 
 -- 从这里开始下面的东西都是测试内容,不用看,测试数据你可以自己生成
 

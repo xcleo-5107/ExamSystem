@@ -13,9 +13,11 @@ import java.util.Objects;
 public class PoModuleExercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "module_exercise_id")
     private int id;
-
+    @Basic
+    @Column(name = "module_num")
+    private Integer moduleNum;
     @Basic
     @Column(name = "exercise_in_module_num")
     private Integer exerciseInModuleNum;

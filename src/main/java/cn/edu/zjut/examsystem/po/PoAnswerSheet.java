@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -24,20 +25,25 @@ public class PoAnswerSheet {
     @Basic
     @Column(name = "total_score")
     private Integer totalScore;
-    @Basic
-    @Column(name = "sheet_status")
-    private Integer sheetStatus;
+
+    @OneToMany
+    @JoinColumn(name = "sheet_num")
+    private List<PoAnswerSheetDetail> answerSheetDetails;
+
+    @ManyToOne
+    @JoinColumn(name = "sheet_status")
+    private PoAnswerSheetStatusType statusType;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PoAnswerSheet that = (PoAnswerSheet) o;
-        return sheetNum == that.sheetNum && Objects.equals(schemeNum, that.schemeNum) && Objects.equals(studentId, that.studentId) && Objects.equals(totalScore, that.totalScore) && Objects.equals(sheetStatus, that.sheetStatus);
+        return sheetNum == that.sheetNum && Objects.equals(schemeNum, that.schemeNum) && Objects.equals(studentId, that.studentId) && Objects.equals(totalScore, that.totalScore);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sheetNum, schemeNum, studentId, totalScore, sheetStatus);
+        return Objects.hash(sheetNum, schemeNum, studentId, totalScore);
     }
 }

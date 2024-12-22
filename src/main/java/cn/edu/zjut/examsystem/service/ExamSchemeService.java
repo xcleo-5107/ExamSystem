@@ -19,7 +19,17 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
     }
 
     @Override
+    public List<PoExamScheme> findAll() {
+        return examSchemeDao.findAll();
+    }
+
+    @Override
     public PoExamScheme alter(PoExamScheme examScheme) {
+        return examSchemeDao.save(examScheme);
+    }
+
+    @Override
+    public PoExamScheme add(PoExamScheme examScheme) {
         return examSchemeDao.save(examScheme);
     }
 }

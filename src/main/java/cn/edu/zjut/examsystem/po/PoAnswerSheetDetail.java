@@ -19,17 +19,15 @@ public class PoAnswerSheetDetail {
     @Column(name = "sheet_num")
     private Integer sheetNum;
     @Basic
-    @Column(name = "module_num")
-    private Integer moduleNum;
-    @Basic
-    @Column(name = "exercise_in_module_num")
-    private Integer exerciseInModuleNum;
-    @Basic
     @Column(name = "answer")
     private String answer;
     @Basic
     @Column(name = "score")
     private Integer score;
+
+    @ManyToOne
+    @JoinColumn(name = "module_exercise_id")
+    private PoModuleExercise moduleExercise;
 
 
     @Override
@@ -37,11 +35,11 @@ public class PoAnswerSheetDetail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PoAnswerSheetDetail that = (PoAnswerSheetDetail) o;
-        return detailId == that.detailId && Objects.equals(sheetNum, that.sheetNum) && Objects.equals(moduleNum, that.moduleNum) && Objects.equals(exerciseInModuleNum, that.exerciseInModuleNum) && Objects.equals(answer, that.answer) && Objects.equals(score, that.score);
+        return detailId == that.detailId && Objects.equals(sheetNum, that.sheetNum) && Objects.equals(answer, that.answer) && Objects.equals(score, that.score);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(detailId, sheetNum, moduleNum, exerciseInModuleNum, answer, score);
+        return Objects.hash(detailId, sheetNum, answer, score);
     }
 }
