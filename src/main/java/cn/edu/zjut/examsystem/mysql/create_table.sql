@@ -13,8 +13,8 @@ CREATE TABLE review_type
 (
 type_num INT AUTO_INCREMENT PRIMARY KEY,
 type_name VARCHAR(60)
-)
-;
+);
+
 
 
 
@@ -35,7 +35,7 @@ semester VARCHAR(60)
 
 
 DROP TABLE IF EXISTS course_marjor;
-CREATE TABLE course
+CREATE TABLE course_marjor
 (
 major_num INT,
 course_num INT
@@ -172,7 +172,7 @@ module_in_exam_num INT
 DROP TABLE 	IF EXISTS module_exercise;
 CREATE TABLE module_exercise
 (
-id INT AUTO_INCREMENT PRIMARY KEY,
+module_exercise_id INT AUTO_INCREMENT PRIMARY KEY,
 exercise_num INT,
 module_num INT,
 exercise_in_module_num INT
@@ -190,6 +190,7 @@ type_name VARCHAR(60)
 );
 
 
+
 DROP TABLE 	IF EXISTS exam_scheme;
 CREATE TABLE exam_scheme
 (
@@ -200,7 +201,7 @@ scheme_end DATETIME,
 course_num INT,
 exam_type INT,
 class_num VARCHAR(3000),
-teacher_nums VARCHAR(3000)
+teacher_num VARCHAR(3000)
 
 -- FOREIGN KEY (exam_num) REFERENCES exam(exam_num),
 -- FOREIGN KEY (course_num) REFERENCES course(course_num),
@@ -239,8 +240,7 @@ CREATE TABLE answer_sheet_detail
 (
 detail_id INT AUTO_INCREMENT PRIMARY KEY,
 sheet_num INT,
-module_num INT,
-exercise_in_module_num INT,
+module_exercise_id INT,
 answer VARCHAR(3000),
 score INT
 
@@ -460,21 +460,20 @@ INSERT INTO answer_sheet(scheme_num,student_id,sheet_status) VALUES
 (1,2,1);
 
 
+INSERT INTO answer_sheet_detail(sheet_num,module_exercise_id,answer) VALUES
+(1,1,"B"),
+(1,2,"C"),
+(1,3,"A"),
+(1,4,"D"),
+(1,5,"B");
 
-INSERT INTO answer_sheet_detail(sheet_num,module_num,exercise_in_module_num,answer) VALUES
-(1,1,1,"B"),
-(1,1,2,"C"),
-(1,1,3,"A"),
-(1,1,4,"D"),
-(1,1,5,"B");
 
-
-INSERT INTO answer_sheet_detail(sheet_num,module_num,exercise_in_module_num,answer) VALUES
-(2,1,1,"B"),
-(2,1,2,"C"),
-(2,1,3,"A"),
-(2,1,4,"D"),
-(2,1,5,"B");
+INSERT INTO answer_sheet_detail(sheet_num,module_exercise_id,answer) VALUES
+(2,1,"B"),
+(2,2,"C"),
+(2,3,"A"),
+(2,4,"D"),
+(2,5,"B");
 
 
 INSERT INTO student_account(username,password_,student_id) VALUES
@@ -886,12 +885,26 @@ WHERE cla.class_num="C01";
 
 
 
-
-
 SELECT *
-FROM leader_account;
+FROM course
+WHERE course_name LIKE "%A%";
 
 
-SELECT *
-FROM courses AS c
-JOIN majors AS m ON c.major_num = m.major_num;
+select
+        es.scheme_num,
+        es.scheme_begin,
+        es.scheme_end,
+        es.class_num,
+        es.teacher_num,
+        es.exam_num,
+        es.exam_type,
+        c.course_num 
+    from
+        exam_scheme AS es 
+    JOIN
+        exam_type AS et 
+            On et.type_num = es.exam_type 
+    JOIN
+        course AS c 
+            ON c.course_num = es.course_num 
+    WHERE DATE_FORMAT(es.scheme_end, '%Y-%m-%d') LIKE "%2022%";
