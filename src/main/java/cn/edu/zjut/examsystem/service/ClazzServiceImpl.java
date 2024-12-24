@@ -11,6 +11,7 @@ public interface ClazzServiceImpl {
     List<PoClazz> findAllByExamSchemeNum(int schemeNum);
 
     List<PoClazz> findAll();
+    List<PoClazz> findAllByStudentId(int studentId);
 
     PoClazz findById(int id);
 

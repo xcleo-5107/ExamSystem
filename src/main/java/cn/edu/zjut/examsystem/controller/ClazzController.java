@@ -1,11 +1,9 @@
 package cn.edu.zjut.examsystem.controller;
 
-import cn.edu.zjut.examsystem.Code;
+import cn.edu.zjut.examsystem.Enum.Code;
 import cn.edu.zjut.examsystem.ResponseMessage;
 import cn.edu.zjut.examsystem.po.PoClazz;
-import cn.edu.zjut.examsystem.po.PoExamScheme;
 import cn.edu.zjut.examsystem.service.ClazzService;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,11 +40,17 @@ public class ClazzController {
     }
 
     @GetMapping("/examSchemeNum/{examSchemeNum}")
-    public ResponseMessage<List<PoClazz>> findByexamSchemeNum(@PathVariable int examSchemeNum)
+    public ResponseMessage<List<PoClazz>> findByExamSchemeNum(@PathVariable int examSchemeNum)
     {
         List<PoClazz> clazzes = clazzService.findAllByExamSchemeNum(examSchemeNum);
-        if(clazzes == null || clazzes.isEmpty()) return new ResponseMessage<>(Code.FAIL,"为查询到有效资源",null);
+        if(clazzes == null || clazzes.isEmpty()) return new ResponseMessage<>(Code.FAIL,"未查询到有效资源",null);
         else return new ResponseMessage<>(Code.SUCCESS,"查询成功",clazzes);
+    }
+
+    @GetMapping("/studentId/{studentId}")
+    public ResponseMessage<List<PoClazz>> findAllByStudentId(@PathVariable int studentId)
+    {
+        return ResponseMessage.success("查询成功",clazzService.findAllByStudentId(studentId));
     }
 
     @PutMapping("/classNum/{classNum}/studentId/{studentId}")
@@ -56,4 +60,6 @@ public class ClazzController {
         if(!res) return new ResponseMessage<>(Code.FAIL,"修改失败,目标不存在或在此期间已被更改",false);
         else return new ResponseMessage<>(Code.SUCCESS,"修改成功",true);
     }
+
+
 }

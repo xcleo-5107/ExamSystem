@@ -30,10 +30,6 @@ public class PoStudent {
     private String studentSex;
 
     @Basic
-    @Column(name = "major_num")
-    private Integer majorNum;
-
-    @Basic
     @Column(name = "credit")
     private Double credit;
 
@@ -43,18 +39,22 @@ public class PoStudent {
 
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "students")
-    private Set<PoClazz> clazzes;
+    private List<PoClazz> clazzes;
+
+    @ManyToOne
+    @JoinColumn(name = "major_num")
+    private PoMajor major;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PoStudent poStudent = (PoStudent) o;
-        return studentId == poStudent.studentId && Objects.equals(studentName, poStudent.studentName) && Objects.equals(studentSex, poStudent.studentSex) && Objects.equals(majorNum, poStudent.majorNum) && Objects.equals(credit, poStudent.credit) && Objects.equals(semester, poStudent.semester);
+        return studentId == poStudent.studentId && Objects.equals(studentName, poStudent.studentName) && Objects.equals(studentSex, poStudent.studentSex) && Objects.equals(credit, poStudent.credit) && Objects.equals(semester, poStudent.semester);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentName, studentId, studentSex, majorNum, credit, semester);
+        return Objects.hash(studentName, studentId, studentSex, credit, semester);
     }
 }

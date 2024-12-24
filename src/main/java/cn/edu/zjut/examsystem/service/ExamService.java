@@ -26,17 +26,16 @@ public class ExamService implements ExamServiceImpl{
 
     @Transactional
     @Override
-    public PoExam alter(PoExam exam) {
-        return examDao.save(exam);
+    public Boolean alter(PoExam exam) {
+        examDao.save(exam);
+        return true;
     }
 
     @Transactional
-    public PoExam add(PoExam exam)
+    public Boolean add(PoExam exam)
     {
-        examDao.save(exam);
-        entityManager.refresh(exam);
-
-        return exam;
+        entityManager.persist(exam);
+        return true;
     }
 
     @Transactional

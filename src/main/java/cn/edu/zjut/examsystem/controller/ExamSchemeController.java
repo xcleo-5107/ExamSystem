@@ -1,14 +1,12 @@
 package cn.edu.zjut.examsystem.controller;
 
-import cn.edu.zjut.examsystem.Code;
+import cn.edu.zjut.examsystem.Enum.Code;
 import cn.edu.zjut.examsystem.ResponseMessage;
 import cn.edu.zjut.examsystem.po.PoExamScheme;
 import cn.edu.zjut.examsystem.service.ExamSchemeService;
-import cn.edu.zjut.examsystem.service.ExamSchemeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,7 +16,7 @@ public class ExamSchemeController {
     private ExamSchemeService examSchemeService;
 
     @PostMapping
-    public ResponseMessage<PoExamScheme> add(@RequestBody PoExamScheme examScheme)
+    public ResponseMessage<Boolean> add(@RequestBody PoExamScheme examScheme)
     {
         return new ResponseMessage<>(Code.SUCCESS,"添加成功",examSchemeService.add(examScheme));
     }
@@ -32,6 +30,12 @@ public class ExamSchemeController {
         else return new ResponseMessage<>(Code.SUCCESS,"查询成功",examSchemes);
     }
 
+    @GetMapping("/studentId/{studentId}")
+    public ResponseMessage<List<PoExamScheme>> findAllByStudentId(@PathVariable int studentId)
+    {
+        return ResponseMessage.success("查询成功",examSchemeService.findAllByStudentId(studentId));
+    }
+
     @GetMapping
     public ResponseMessage<List<PoExamScheme>> findAll()
     {
@@ -42,7 +46,7 @@ public class ExamSchemeController {
     }
 
     @PutMapping
-    public ResponseMessage<PoExamScheme> alter(@RequestBody PoExamScheme examScheme)
+    public ResponseMessage<Boolean> alter(@RequestBody PoExamScheme examScheme)
     {
         return new ResponseMessage<>(Code.SUCCESS,"修改成功",examSchemeService.alter(examScheme));
     }

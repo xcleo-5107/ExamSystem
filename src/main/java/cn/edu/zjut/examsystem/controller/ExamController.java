@@ -1,6 +1,6 @@
 package cn.edu.zjut.examsystem.controller;
 
-import cn.edu.zjut.examsystem.Code;
+import cn.edu.zjut.examsystem.Enum.Code;
 import cn.edu.zjut.examsystem.ResponseMessage;
 import cn.edu.zjut.examsystem.po.PoExam;
 import cn.edu.zjut.examsystem.service.ExamService;
@@ -16,7 +16,7 @@ public class ExamController {
     private ExamService examService;
 
     @PostMapping
-    public ResponseMessage<PoExam> add(@RequestBody PoExam exam)
+    public ResponseMessage<Boolean> add(@RequestBody PoExam exam)
     {
         return new ResponseMessage<>(Code.SUCCESS,"添加成功",examService.add(exam));
     }
@@ -44,7 +44,7 @@ public class ExamController {
     }
 
     @PutMapping
-    public ResponseMessage<PoExam> alter(@RequestBody PoExam exam)
+    public ResponseMessage<Boolean> alter(@RequestBody PoExam exam)
     {
         return new ResponseMessage<>(Code.SUCCESS,"修改成功",examService.alter(exam));
     }

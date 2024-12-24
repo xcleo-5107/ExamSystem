@@ -33,7 +33,7 @@ public class ClazzService implements ClazzServiceImpl{
         if(targets==null) return null;
 
         List<PoClazz> clazzes = new ArrayList<>();
-        String[] targetSplited = targets.split(" ");
+        String[] targetSplited = targets.split(",");
 
         for(String s:targetSplited)
         {
@@ -57,6 +57,11 @@ public class ClazzService implements ClazzServiceImpl{
     @Override
     public List<PoClazz> findAll() {
         return clazzDao.findAll();
+    }
+
+    @Override
+    public List<PoClazz> findAllByStudentId(int studentId) {
+        return clazzDao.findAllByStudents_StudentId(studentId);
     }
 
     @Override

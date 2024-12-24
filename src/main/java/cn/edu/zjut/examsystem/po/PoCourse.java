@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,12 +28,6 @@ public class PoCourse {
     @Column(name = "course_preiod")
     private Integer coursePreiod;
     @Basic
-    @Column(name = "review_type")
-    private Integer reviewType;
-    @Basic
-    @Column(name = "major_num")
-    private Integer majorNum;
-    @Basic
     @Column(name = "semester")
     private String semester;
 
@@ -45,16 +40,29 @@ public class PoCourse {
     @JsonIgnore
     private Set<PoTeacher> teachers;
 
+    @ManyToOne
+    @JoinColumn(name = "review_type")
+    private PoReviewType reviewType;
+
+    //原则上课程和学院一旦开设便不可轻易关闭,因此只做单向映射就够用了
+    @ManyToMany
+    @JoinTable(
+            name = "course_major",
+            joinColumns = @JoinColumn(name = "course_num"),
+            inverseJoinColumns = @JoinColumn(name = "major_num")
+    )
+    private List<PoMajor> majors;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PoCourse poCourse = (PoCourse) o;
-        return courseNum == poCourse.courseNum && Double.compare(courseCredit, poCourse.courseCredit) == 0 && Objects.equals(courseName, poCourse.courseName) && Objects.equals(coursePreiod, poCourse.coursePreiod) && Objects.equals(reviewType, poCourse.reviewType) && Objects.equals(majorNum, poCourse.majorNum) && Objects.equals(semester, poCourse.semester);
+        return courseNum == poCourse.courseNum && Double.compare(courseCredit, poCourse.courseCredit) == 0 && Objects.equals(courseName, poCourse.courseName) && Objects.equals(coursePreiod, poCourse.coursePreiod) && Objects.equals(semester, poCourse.semester);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseName, courseNum, courseCredit, coursePreiod, reviewType, majorNum, semester);
+        return Objects.hash(courseName, courseNum, courseCredit, coursePreiod, semester);
     }
 }

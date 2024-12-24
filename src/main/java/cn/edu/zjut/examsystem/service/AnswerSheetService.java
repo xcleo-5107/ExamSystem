@@ -22,4 +22,9 @@ public class AnswerSheetService implements AnswerSheetServiceImpl{
     public PoAnswerSheet findBySheetNum(int num) {
         return answerSheetDao.findById(num);
     }
+
+    @Override
+    public PoAnswerSheet findByStudentIdAndSchemeNum(int studentId, int schemeNum) {
+        return answerSheetDao.findByStudentIdAndSchemeNum(studentId,schemeNum);
+    }
 }

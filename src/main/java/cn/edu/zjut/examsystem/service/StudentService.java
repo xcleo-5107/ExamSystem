@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,10 +31,35 @@ public class StudentService implements StudentServiceImpl{
         return studentDao.findAllByStudentName(name);
     }
 
+    @Override
+    public List<PoStudent> findAll() {
+        return studentDao.findAll();
+    }
+
+    @Override
+    public List<PoStudent> findAllByStr(String str) {
+        return studentDao.findAllByStr("%"+str+"%");
+    }
+
     @Transactional
-    public Boolean addStudent(PoStudent student)
+    @Override
+    public Boolean add(PoStudent student)
     {
+        entityManager.persist(student);
+        return true;
+    }
+
+    @Override
+    public Boolean alter(PoStudent student) {
         studentDao.save(student);
+        return true;
+    }
+
+    @Override
+    public Boolean deleteById(int id) {
+        if(!studentDao.existsById(id)) return false;
+        else studentDao.deleteById(id);
+
         return true;
     }
 

@@ -10,8 +10,8 @@ public interface ExerciseServiceImpl {
     List<PoExercise> findAll();
     List<PoExercise> findAllByStr(String str);
     PoExercise findById(int num);
-    PoExercise alter(PoExercise exercise);
 
-    PoExercise add(PoExercise exercise);
+    Boolean alter(PoExercise exercise);
+    Boolean add(PoExercise exercise);
     Boolean deleteById(int num);
 }

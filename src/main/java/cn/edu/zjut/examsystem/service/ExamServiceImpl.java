@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ExamServiceImpl {
     PoExam findById(int id);
-    PoExam alter(PoExam exam);
-    PoExam add(PoExam exam);
+    Boolean alter(PoExam exam);
+    Boolean add(PoExam exam);
     Boolean deleteById(int id);
     List<PoExam> findAllByStr(String str);
     List<PoExam> findAll();

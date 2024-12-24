@@ -1,6 +1,6 @@
 package cn.edu.zjut.examsystem.controller;
 
-import cn.edu.zjut.examsystem.Code;
+import cn.edu.zjut.examsystem.Enum.Code;
 import cn.edu.zjut.examsystem.ResponseMessage;
 import cn.edu.zjut.examsystem.po.PoExercise;
 import cn.edu.zjut.examsystem.service.ExerciseService;
@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.LinkOption;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/exercise")
@@ -19,7 +17,7 @@ public class ExerciseController {
     private ExerciseService exerciseService;
 
     @PostMapping
-    public ResponseMessage<PoExercise> add(@RequestBody PoExercise exercise)
+    public ResponseMessage<Boolean> add(@RequestBody PoExercise exercise)
     {
         return new ResponseMessage<>(Code.SUCCESS,"添加成功", exerciseService.add(exercise));
     }
@@ -47,7 +45,7 @@ public class ExerciseController {
     }
 
     @PutMapping
-    public ResponseMessage<PoExercise> alter(@Validated @RequestBody PoExercise exercise)
+    public ResponseMessage<Boolean> alter(@Validated @RequestBody PoExercise exercise)
     {
         return new ResponseMessage<>(Code.SUCCESS,"修改题目成功",exerciseService.alter(exercise));
     }

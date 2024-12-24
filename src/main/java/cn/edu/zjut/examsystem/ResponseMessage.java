@@ -1,9 +1,8 @@
 package cn.edu.zjut.examsystem;
 
+import cn.edu.zjut.examsystem.Enum.Code;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.xml.crypto.Data;
 
 @Getter
 @Setter
@@ -12,7 +11,7 @@ public class ResponseMessage<T> {
     private String message;
     private T data;
 
-    public ResponseMessage(Code code,String message,T data)
+    public ResponseMessage(Code code, String message, T data)
     {
         this.code = code.getValue();
         this.message = message;

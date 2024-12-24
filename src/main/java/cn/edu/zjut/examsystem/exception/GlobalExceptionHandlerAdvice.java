@@ -1,7 +1,7 @@
 package cn.edu.zjut.examsystem.exception;
 
 
-import cn.edu.zjut.examsystem.Code;
+import cn.edu.zjut.examsystem.Enum.Code;
 import cn.edu.zjut.examsystem.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.stream.Collectors;
 
 //统一异常处理类
@@ -43,5 +41,14 @@ public class GlobalExceptionHandlerAdvice {
                 .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.joining(", "));
         return new ResponseMessage(Code.ERROR,errorMessage,null);
+    }
+
+    @ExceptionHandler(jakarta.persistence.EntityExistsException.class)
+    @ResponseBody
+    public ResponseMessage entityExistsException(jakarta.persistence.EntityExistsException ex)
+    {
+        log.error("数据校验异常:"+ex);
+
+        return new ResponseMessage(Code.ERROR,"尝试修改一个已经存在的实体类,疑似攻击:",null);
     }
 }

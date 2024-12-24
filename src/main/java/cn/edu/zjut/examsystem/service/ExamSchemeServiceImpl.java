@@ -8,6 +8,7 @@ import java.util.List;
 public interface ExamSchemeServiceImpl {
     List<PoExamScheme> findAllByStr(String str);
     List<PoExamScheme> findAll();
-    PoExamScheme alter(PoExamScheme examScheme);
-    PoExamScheme add(PoExamScheme examScheme);
+    List<PoExamScheme> findAllByStudentId(int studentId);
+    Boolean alter(PoExamScheme examScheme);
+    Boolean add(PoExamScheme examScheme);
 }

@@ -1,6 +1,7 @@
 package cn.edu.zjut.examsystem.controller;
 
 import cn.edu.zjut.examsystem.ResponseMessage;
+import cn.edu.zjut.examsystem.dao.StudentDao;
 import cn.edu.zjut.examsystem.po.PoStudent;
 import cn.edu.zjut.examsystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //用于指定将方法返回的对象转换为 JSON 或 XML 格式的响应体
@@ -20,17 +22,31 @@ public class StudentController {
     //POST方式一般用于添加
     //@RequestBody用于将传入的json响应接收
     @PostMapping
-    public ResponseMessage<Boolean> addStudent(@Validated @RequestBody PoStudent student)
+    public ResponseMessage<Boolean> add(@Validated @RequestBody PoStudent student)
     {
-        return ResponseMessage.success("添加新学生数据成功",studentService.addStudent(student));
+        return ResponseMessage.success("添加新学生数据成功",studentService.add(student));
+    }
+
+    @GetMapping
+    public ResponseMessage<List<PoStudent>> findAll()
+    {
+        return ResponseMessage.success("查询学生成功",studentService.findAll());
+    }
+
+    @GetMapping("/{inputDate}")
+    public ResponseMessage<List<PoStudent>> findAllByStr(@PathVariable String inputDate)
+    {
+        return ResponseMessage.success("查询成功",studentService.findAllByStr(inputDate));
     }
 
 
     @GetMapping("/id/{id}")
     public ResponseMessage<PoStudent> findByStudentId(@PathVariable(value = "id") int id)
     {
-        System.out.println("id:"+id);
-        return ResponseMessage.success("id查询学生成功",studentService.findByStudentId(id));
+        PoStudent student = studentService.findByStudentId(id);
+
+        if(student == null) return ResponseMessage.fail("未查询到有效目标",null);
+        return ResponseMessage.success("id查询学生成功",student);
     }
 
     @GetMapping("/name/{name}")
@@ -38,5 +54,18 @@ public class StudentController {
     {
         System.out.println("name:"+name);
         return ResponseMessage.success("名字查询学生成功",studentService.findAllByStudentName(name));
+    }
+
+    @PutMapping
+    public ResponseMessage<Boolean> alter(@RequestBody PoStudent student)
+    {
+        return ResponseMessage.success("修改成功", studentService.alter(student));
+    }
+
+    @DeleteMapping("/{studentId}")
+    public ResponseMessage<Boolean> deleteById(@PathVariable int studentId)
+    {
+        if(studentService.deleteById(studentId)) return ResponseMessage.success("删除成功",true);
+        else return ResponseMessage.fail("删除失败",false);
     }
 }

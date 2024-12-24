@@ -1,6 +1,6 @@
 package cn.edu.zjut.examsystem.controller;
 
-import cn.edu.zjut.examsystem.Code;
+import cn.edu.zjut.examsystem.Enum.Code;
 import cn.edu.zjut.examsystem.ResponseMessage;
 import cn.edu.zjut.examsystem.po.PoAnswerSheet;
 import cn.edu.zjut.examsystem.service.AnswerSheetDetailService;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.LongSummaryStatistics;
 
 @RestController
 @RequestMapping("/AnswerSheet")
@@ -26,6 +25,12 @@ public class AnswerSheetController {
 
         if(answerSheets == null || answerSheets.isEmpty()) return new ResponseMessage<>(Code.FAIL,"未查询到有效目标",null);
         else return new ResponseMessage<>(Code.SUCCESS,"查询成功",answerSheets);
+    }
+
+    @GetMapping("/examSchemeNum/{examSchemeNum}/studentId/{studentId}")
+    public ResponseMessage<PoAnswerSheet> findByStudentIdAndSchemeNum(@PathVariable int studentId,@PathVariable int examSchemeNum)
+    {
+        return ResponseMessage.success("查询成功",answerSheetService.findByStudentIdAndSchemeNum(studentId,examSchemeNum));
     }
 
     @GetMapping("/sheetNum/{sheetNum}")
