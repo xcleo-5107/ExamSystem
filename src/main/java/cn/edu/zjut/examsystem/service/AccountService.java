@@ -2,6 +2,7 @@ package cn.edu.zjut.examsystem.service;
 
 import cn.edu.zjut.examsystem.Enum.LoginStatus;
 import cn.edu.zjut.examsystem.dao.*;
+import cn.edu.zjut.examsystem.dto.AccountDto;
 import cn.edu.zjut.examsystem.po.PoLeaderAccount;
 import cn.edu.zjut.examsystem.po.PoStudent;
 import cn.edu.zjut.examsystem.po.PoStudentAccount;
@@ -27,9 +28,8 @@ public class AccountService implements AccountServiceImpl{
 
     @Transactional(readOnly = true)
     @Override
-    public int loginAsStudent(String username, String password) {
-
-        PoStudentAccount studentAccount = studentAccountDao.findByUsernameAndPassword(username, password);
+    public int loginAsStudent(AccountDto accountDto) {
+        PoStudentAccount studentAccount = studentAccountDao.findByUsernameAndPassword(accountDto.getUsername(), accountDto.getPassword());
         if(studentAccount == null) return LoginStatus.UserNameOrPasswordFail.getValue();
 
         if(studentAccount.getStudentId() == null) return LoginStatus.AccountHaveNoEntity.getValue();
@@ -46,8 +46,8 @@ public class AccountService implements AccountServiceImpl{
 
     @Transactional(readOnly = true)
     @Override
-    public int loginAsTeacher(String username, String password) {
-        PoTeacherAccount teacherAccount = teacherAccountDao.findByUsernameAndPassword(username, password);
+    public int loginAsTeacher(AccountDto accountDto) {
+        PoTeacherAccount teacherAccount = teacherAccountDao.findByUsernameAndPassword(accountDto.getUsername(), accountDto.getPassword());
         if(teacherAccount == null) return LoginStatus.UserNameOrPasswordFail.getValue();
 
         if(teacherAccount.getTeacherNum() == null) return LoginStatus.AccountHaveNoEntity.getValue();
@@ -64,8 +64,8 @@ public class AccountService implements AccountServiceImpl{
 
     @Transactional(readOnly = true)
     @Override
-    public int loginAsLeader(String username, String password) {
-        PoLeaderAccount leaderAccount = leaderAccountDao.findByUsernameAndPassword(username, password);
+    public int loginAsLeader(AccountDto accountDto) {
+        PoLeaderAccount leaderAccount = leaderAccountDao.findByUsernameAndPassword(accountDto.getUsername(), accountDto.getPassword());
         if(leaderAccount == null) return LoginStatus.UserNameOrPasswordFail.getValue();
         else return 0;
     }
