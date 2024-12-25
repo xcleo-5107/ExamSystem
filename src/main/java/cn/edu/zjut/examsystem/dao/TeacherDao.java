@@ -16,10 +16,10 @@ public interface TeacherDao extends JpaRepository<PoTeacher,Integer> {
             "cl.class_num," +
             "co.course_num " +
             "from teacher t " +
-            "join class_teacher as clt on clt.teacher_num = t.teacher_num " +
-            "join class as cl on clt.class_num = cl.class_num " +
-            "join course_teacher as cot on cot.teacher_num = t.teacher_num " +
-            "join course as co on co.course_num = cot.course_num " +
+            "LEFT join class_teacher as clt on clt.teacher_num = t.teacher_num " +
+            "LEFT join class as cl on clt.class_num = cl.class_num " +
+            "LEFT join course_teacher as cot on cot.teacher_num = t.teacher_num " +
+            "LEFT join course as co on co.course_num = cot.course_num " +
             "where t.teacher_name LIKE ?1 " +
             "or t.teacher_sex LIKE ?1 " +
             "or cl.class_name LIKE ?1 " +

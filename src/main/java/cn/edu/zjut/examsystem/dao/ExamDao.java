@@ -20,11 +20,11 @@ public interface ExamDao extends JpaRepository<PoExam, Integer> {
             "c.course_num," +
             "t.teacher_num " +
             "from exam e " +
-            "JOIN exam_module AS em ON e.exam_num = em.exam_num " +
-            "JOIN module_exercise AS me ON me.module_num = em.module_num " +
-            "JOIN exercise AS ex ON ex.exercise_num = me.exercise_num " +
-            "JOIN course AS c ON c.course_num = e.course_num " +
-            "JOIN teacher AS t ON e.teacher_num = t.teacher_num " +
+            "LEFT JOIN exam_module AS em ON e.exam_num = em.exam_num " +
+            "LEFT JOIN module_exercise AS me ON me.module_num = em.module_num " +
+            "LEFT JOIN exercise AS ex ON ex.exercise_num = me.exercise_num " +
+            "LEFT JOIN course AS c ON c.course_num = e.course_num " +
+            "LEFT JOIN teacher AS t ON e.teacher_num = t.teacher_num " +
             "WHERE c.course_name LIKE ?1 " +
             "OR t.teacher_name LIKE ?1 " +
             "OR ex.exercise_answer LIKE ?1 " +

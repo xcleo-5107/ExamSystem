@@ -18,8 +18,8 @@ public interface ExamSchemeDao extends JpaRepository<PoExamScheme,Integer> {
             "es.exam_type,"+
             "c.course_num " +
             "from exam_scheme AS es " +
-            "JOIN exam_type AS et On et.type_num = es.exam_type " +
-            "JOIN course AS c ON c.course_num = es.course_num "+
+            "LEFT JOIN exam_type AS et On et.type_num = es.exam_type " +
+            "LEFT JOIN course AS c ON c.course_num = es.course_num "+
             "WHERE c.course_name LIKE ?1 " +
             "OR c.semester LIKE ?1 " +
             "OR et.type_name LIKE ?1 " +

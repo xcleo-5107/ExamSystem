@@ -33,7 +33,9 @@ public class ExamSchemeController {
     @GetMapping("/studentId/{studentId}")
     public ResponseMessage<List<PoExamScheme>> findAllByStudentId(@PathVariable int studentId)
     {
-        return ResponseMessage.success("查询成功",examSchemeService.findAllByStudentId(studentId));
+        List<PoExamScheme> examSchemes = examSchemeService.findAllByStudentId(studentId);
+        if(examSchemes == null || examSchemes.isEmpty()) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("查询成功",examSchemes);
     }
 
     @GetMapping

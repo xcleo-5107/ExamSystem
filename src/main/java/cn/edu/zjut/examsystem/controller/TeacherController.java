@@ -28,21 +28,27 @@ public class TeacherController {
 
 
     @GetMapping("/id/{id}")
-    public ResponseMessage<PoTeacher> findById(@RequestParam int id)
+    public ResponseMessage<PoTeacher> findById(@PathVariable int id)
     {
-        return ResponseMessage.success("编号查询教师成功",teacherService.findByTeacherNum(id));
+        PoTeacher teacher = teacherService.findByTeacherNum(id);
+        if(teacher == null) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("编号查询教师成功",teacher);
     }
 
     @GetMapping
     public  ResponseMessage<List<PoTeacher>> findAll()
     {
-        return ResponseMessage.success("查询成功",teacherService.findAll());
+        List<PoTeacher> teachers = teacherService.findAll();
+        if(teachers == null || teachers.isEmpty()) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("查询成功",teachers);
     }
 
     @GetMapping("/inputData/{inputData}")
     public ResponseMessage<List<PoTeacher>> findAllByStr(@PathVariable String inputData)
     {
-        return ResponseMessage.success("查询成功",teacherService.findAllByStr(inputData));
+        List<PoTeacher> teachers = teacherService.findAllByStr(inputData);
+        if(teachers == null || teachers.isEmpty()) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("查询成功",teachers);
     }
 
     @PutMapping

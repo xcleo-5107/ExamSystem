@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Repository
 public interface StudentDao extends JpaRepository<PoStudent, Integer> {
-    Set<PoStudent> findAllByStudentName(String name);
+    List<PoStudent> findAllByStudentName(String name);
 
     @Query(value = "select s.student_id," +
             "s.student_name," +
@@ -22,9 +22,9 @@ public interface StudentDao extends JpaRepository<PoStudent, Integer> {
             "s.semester," +
             "s.major_num " +
             "FROM student s " +
-            "JOIN major AS m ON m.major_num = s.major_num " +
-            "JOIN class_student AS cs ON cs.student_id = s.student_id " +
-            "JOIN class AS c ON c.class_num = cs.class_num " +
+            "LEFT JOIN major AS m ON m.major_num = s.major_num " +
+            "LEFT JOIN class_student AS cs ON cs.student_id = s.student_id " +
+            "LEFT JOIN class AS c ON c.class_num = cs.class_num " +
             "WHERE s.student_id LIKE ?1 " +
             "OR s.student_name LIKE ?1 " +
             "OR s.student_sex LIKE ?1 " +

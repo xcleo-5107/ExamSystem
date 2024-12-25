@@ -30,13 +30,17 @@ public class StudentController {
     @GetMapping
     public ResponseMessage<List<PoStudent>> findAll()
     {
-        return ResponseMessage.success("查询学生成功",studentService.findAll());
+        List<PoStudent> students = studentService.findAll();
+        if(students == null || students.isEmpty()) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("查询成功",students);
     }
 
     @GetMapping("/{inputDate}")
     public ResponseMessage<List<PoStudent>> findAllByStr(@PathVariable String inputDate)
     {
-        return ResponseMessage.success("查询成功",studentService.findAllByStr(inputDate));
+        List<PoStudent> students = studentService.findAllByStr(inputDate);
+        if(students == null || students.isEmpty()) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("查询成功",students);
     }
 
 
@@ -50,10 +54,11 @@ public class StudentController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseMessage<Set<PoStudent>> findAllByStudentName(@PathVariable("name") String name)
+    public ResponseMessage<List<PoStudent>> findAllByStudentName(@PathVariable("name") String name)
     {
-        System.out.println("name:"+name);
-        return ResponseMessage.success("名字查询学生成功",studentService.findAllByStudentName(name));
+        List<PoStudent> students = studentService.findAllByStudentName(name);
+        if(students == null || students.isEmpty()) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("查询成功",students);
     }
 
     @PutMapping

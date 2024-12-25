@@ -30,7 +30,9 @@ public class AnswerSheetController {
     @GetMapping("/examSchemeNum/{examSchemeNum}/studentId/{studentId}")
     public ResponseMessage<PoAnswerSheet> findByStudentIdAndSchemeNum(@PathVariable int studentId,@PathVariable int examSchemeNum)
     {
-        return ResponseMessage.success("查询成功",answerSheetService.findByStudentIdAndSchemeNum(studentId,examSchemeNum));
+        PoAnswerSheet answerSheet = answerSheetService.findByStudentIdAndSchemeNum(studentId,examSchemeNum);
+        if(answerSheet == null) return  ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("查询成功",answerSheet);
     }
 
     @GetMapping("/sheetNum/{sheetNum}")

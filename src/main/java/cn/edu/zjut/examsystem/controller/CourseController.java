@@ -24,13 +24,17 @@ public class CourseController {
     @GetMapping
     public ResponseMessage<List<PoCourse>> findAll()
     {
-        return new ResponseMessage<>(Code.SUCCESS,"查询成功",courseService.findAll());
+        List<PoCourse> courses = courseService.findAll();
+        if(courses == null || courses.isEmpty()) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("查询成功",courses);
     }
 
     @GetMapping("/{inputData}")
     public ResponseMessage<List<PoCourse>> findAllByStr(@PathVariable String inputData)
     {
-        return new ResponseMessage<>(Code.SUCCESS,"查询成功",courseService.findAllByStr(inputData));
+        List<PoCourse> courses = courseService.findAllByStr(inputData);
+        if(courses == null || courses.isEmpty()) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("查询成功",courses);
     }
 
     @PutMapping

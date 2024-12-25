@@ -24,7 +24,9 @@ public class ExamController {
     @GetMapping("/id/{id}")
     public ResponseMessage<PoExam> findById(@PathVariable int id)
     {
-        return new ResponseMessage<>(Code.SUCCESS,"id查询成功",examService.findById(id));
+        PoExam exam = examService.findById(id);
+        if(exam == null) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("id查询成功",exam);
     }
 
     @GetMapping("/inputData/{inputData}")

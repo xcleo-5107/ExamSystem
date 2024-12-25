@@ -50,7 +50,9 @@ public class ClazzController {
     @GetMapping("/studentId/{studentId}")
     public ResponseMessage<List<PoClazz>> findAllByStudentId(@PathVariable int studentId)
     {
-        return ResponseMessage.success("查询成功",clazzService.findAllByStudentId(studentId));
+        List<PoClazz> clazzes = clazzService.findAllByStudentId(studentId);
+        if(clazzes == null || clazzes.isEmpty()) return ResponseMessage.fail("未查询到有效目标",null);
+        return ResponseMessage.success("查询成功",clazzes);
     }
 
     @PutMapping("/classNum/{classNum}/studentId/{studentId}")

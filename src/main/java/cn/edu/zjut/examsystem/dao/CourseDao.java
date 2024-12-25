@@ -17,8 +17,8 @@ public interface CourseDao extends JpaRepository<PoCourse,Integer> {
             "c.major_num," +
             "c.semester " +
             "From course c " +
-            "JOIN review_type AS rt ON rt.type_num = c.review_type " +
-            "JOIN major AS m ON m.major_num = c.major_num " +
+            "LEFT JOIN review_type AS rt ON rt.type_num = c.review_type " +
+            "LEFT JOIN major AS m ON m.major_num = c.major_num " +
             "WHERE c.course_name LIKE ?1 " +
             "OR c.course_credit LIKE ?1 " +
             "OR c.course_preiod LIKE ?1 " +

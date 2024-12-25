@@ -27,5 +27,12 @@ public interface AnswerSheetDao extends JpaRepository<PoAnswerSheet,Integer> {
             "ORDER BY m.moduleNum ASC, m.exerciseInModuleNum ASC")
     PoAnswerSheet findById(int id);
 
+    @Query("SELECT a " +
+            "FROM PoAnswerSheet a " +
+            "JOIN FETCH a.answerSheetDetails d " +
+            "JOIN FETCH d.moduleExercise m " +
+            "WHERE a.sheetNum = ?2 " +
+            "AND a.studentId = ?1 " +
+            "ORDER BY m.moduleNum ASC, m.exerciseInModuleNum ASC")
     PoAnswerSheet findByStudentIdAndSchemeNum(int studentId,int schemeNum);
 }
