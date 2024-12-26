@@ -11,4 +11,6 @@ public interface ExamSchemeServiceImpl {
     List<PoExamScheme> findAllByStudentId(int studentId);
     Boolean alter(PoExamScheme examScheme);
     Boolean add(PoExamScheme examScheme);
+
+    void autoUpdateScheme();//自动更新考试安排状态
 }

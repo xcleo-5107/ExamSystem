@@ -36,6 +36,9 @@ public class PoExamScheme {
     @Column(name = "exam_num")
     private Integer examNum;
 
+    @Column(name = "ended")
+    private Boolean ended;
+
     @ManyToOne
     @JoinColumn(name = "exam_type")
     private PoExamType examType;
@@ -44,17 +47,21 @@ public class PoExamScheme {
     @JoinColumn(name = "course_num")
     private PoCourse course;
 
+    @ManyToOne
+    @JoinColumn(name = "exam_review_model")
+    private PoExamReviewModel examReviewModel;
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PoExamScheme that = (PoExamScheme) o;
-        return schemeNum == that.schemeNum && Objects.equals(schemeBegin, that.schemeBegin) && Objects.equals(examNum, that.examNum) && Objects.equals(schemeEnd, that.schemeEnd) && Objects.equals(examType, that.examType) && Objects.equals(classNum, that.classNum) && Objects.equals(teacherNum, that.teacherNum);
+        return schemeNum == that.schemeNum && ended == that.ended && Objects.equals(schemeBegin, that.schemeBegin) && Objects.equals(examNum, that.examNum) && Objects.equals(schemeEnd, that.schemeEnd) && Objects.equals(examType, that.examType) && Objects.equals(classNum, that.classNum) && Objects.equals(teacherNum, that.teacherNum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(schemeNum,examNum, schemeBegin, schemeEnd, examType, classNum, teacherNum);
+        return Objects.hash(schemeNum,examNum, schemeBegin, schemeEnd, examType, classNum, teacherNum,ended);
     }
 }
