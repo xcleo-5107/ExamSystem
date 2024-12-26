@@ -26,7 +26,6 @@ course_num INT AUTO_INCREMENT PRIMARY KEY,
 course_credit FLOAT(10,1) NOT NULL,
 course_preiod int,
 review_type INT,
-major_num INT,
 semester VARCHAR(60)
 
 -- FOREIGN KEY (review_type) REFERENCES review_type(type_num),
@@ -77,7 +76,6 @@ teacher_name VARCHAR(60),
 teacher_num INT AUTO_INCREMENT PRIMARY KEY,
 teacher_sex VARCHAR(10)
 );
-
 
 
 DROP TABLE IF EXISTS course_teacher;
@@ -299,11 +297,11 @@ INSERT INTO major(major_name) VALUES ("土木工程");
 INSERT INTO review_type(type_name) VALUES ("考试");
 INSERT INTO review_type(type_name) VALUES ("考查");
 
-INSERT INTO course(course_name,course_credit,course_preiod,review_type,major_num,semester) VALUES
-("JAVA",4.0,72,1,1,"大一上"),
-("C++",4.0,72,1,1,"大一上"),
-("流体力学",4.0,72,1,2,"大一上"),
-("土木工程材料",4.0,72,1,2,"大一上");
+INSERT INTO course(course_name,course_credit,course_preiod,review_type,semester) VALUES
+("JAVA",4.0,72,1,"大一上"),
+("C++",4.0,72,1,"大一上"),
+("流体力学",4.0,72,1,"大一上"),
+("土木工程材料",4.0,72,1,"大一上");
 
 
 INSERT INTO class(class_name,course_num,class_time) VALUES ("2021级JAVA01班",1,"周一34");
@@ -508,7 +506,11 @@ INSERT INTO course_teacher(course_num, teacher_num) VALUES
 (4, 8);
 
 
-
+INSERT INTO course_major(course_num, major_num) VALUES
+(1, 1),
+(2, 1),
+(3, 2),
+(4, 2);
 
 
 
@@ -869,42 +871,41 @@ JOIN answer_sheet_status_type AS asst ON ans.sheet_status = asst.type_num
 WHERE scheme_num=3 AND asst.type_name="待批阅");
 
 
-
-SELECT *
-FROM classes AS cla
-JOIN classes_teachers AS ct ON cla.class_num = ct.class_num
-JOIN courses AS co ON cla.course_num=co.course_num
-WHERE ct.teacher_num="T01";
-
-
-SELECT s.student_id,s.student_name
-FROM classes AS cla
-JOIN classes_students AS cs ON cla.class_num = cs.class_num
-JOIN students AS s ON cs.student_id = s.student_id
-WHERE cla.class_num="C01";
-
-
-
-SELECT *
-FROM course
-WHERE course_name LIKE "%A%";
-
-
 select
-        es.scheme_num,
-        es.scheme_begin,
-        es.scheme_end,
-        es.class_num,
-        es.teacher_num,
-        es.exam_num,
-        es.exam_type,
-        c.course_num 
-    from
-        exam_scheme AS es 
+        c.course_name,
+        c.course_num,
+        c.course_credit,
+        c.course_preiod,
+        c.review_type,
+        c.major_num,
+        c.semester 
+    From course c 
+    LEFT JOIN review_type AS rt ON c.review_type = rt.type_num 
+    LEFT JOIN major AS m ON c.major_num = m.major_num 
+    WHERE c.course_name LIKE "%A%";
+		
+		
+		
+select
+        c.course_name,
+        c.course_num,
+        c.course_credit,
+        c.course_preiod,
+        c.review_type,
+        c.major_num,
+        c.semester 
+    From
+        course c 
     JOIN
-        exam_type AS et 
-            On et.type_num = es.exam_type 
+        review_type AS rt 
+            ON rt.type_num = c.review_type 
     JOIN
-        course AS c 
-            ON c.course_num = es.course_num 
-    WHERE DATE_FORMAT(es.scheme_end, '%Y-%m-%d') LIKE "%2022%";
+        major AS m 
+            ON m.major_num = c.major_num 
+    WHERE
+        c.course_name LIKE ? 
+        OR c.course_credit LIKE ? 
+        OR c.course_preiod LIKE ? 
+        OR rt.type_name LIKE ? 
+        OR m.major_name LIKE ? 
+        OR c.semester LIKE ? 
