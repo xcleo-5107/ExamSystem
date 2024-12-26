@@ -29,11 +29,19 @@ public class CourseController {
         else return ResponseMessage.success("查询成功",courses);
     }
 
-    @GetMapping("/{inputData}")
+    @GetMapping("/inputData/{inputData}")
     public ResponseMessage<List<PoCourse>> findAllByStr(@PathVariable String inputData)
     {
         List<PoCourse> courses = courseService.findAllByStr(inputData);
         if(courses == null || courses.isEmpty()) return ResponseMessage.fail("未查询到有效目标",null);
+        else return ResponseMessage.success("查询成功",courses);
+    }
+
+    @GetMapping("/studentId/{studentId}")
+    public ResponseMessage<List<PoCourse>> findAllByStudentId(@PathVariable int studentId)
+    {
+        List<PoCourse> courses = courseService.findByStudentId(studentId);
+        if(courses == null || courses.isEmpty()) return ResponseMessage.fail("未查询到有效数据",null);
         else return ResponseMessage.success("查询成功",courses);
     }
 
