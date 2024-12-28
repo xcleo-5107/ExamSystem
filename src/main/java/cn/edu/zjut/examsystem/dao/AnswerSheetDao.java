@@ -31,8 +31,11 @@ public interface AnswerSheetDao extends JpaRepository<PoAnswerSheet,Integer> {
             "FROM PoAnswerSheet a " +
             "JOIN FETCH a.answerSheetDetails d " +
             "JOIN FETCH d.moduleExercise m " +
-            "WHERE a.sheetNum = ?2 " +
+            "WHERE a.schemeNum = ?2 " +
             "AND a.studentId = ?1 " +
             "ORDER BY m.moduleNum ASC, m.exerciseInModuleNum ASC")
     PoAnswerSheet findByStudentIdAndSchemeNum(int studentId,int schemeNum);
+
+    @Query(value = "call SumScoresBySheetNum(?1)",nativeQuery = true)
+    int callSumScoresBySheetNum(int sheetNum);
 }

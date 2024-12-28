@@ -21,10 +21,10 @@ public class ExamController {
         return new ResponseMessage<>(Code.SUCCESS,"添加成功",examService.add(exam));
     }
 
-    @GetMapping("/id/{id}")
-    public ResponseMessage<PoExam> findById(@PathVariable int id)
+    @GetMapping("/examNum/{examNum}")
+    public ResponseMessage<PoExam> findByExamNum(@PathVariable int examNum)
     {
-        PoExam exam = examService.findById(id);
+        PoExam exam = examService.findById(examNum);
         if(exam == null) return ResponseMessage.fail("未查询到有效目标",null);
         else return ResponseMessage.success("id查询成功",exam);
     }

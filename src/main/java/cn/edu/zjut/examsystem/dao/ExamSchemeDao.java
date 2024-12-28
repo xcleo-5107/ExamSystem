@@ -20,7 +20,8 @@ public interface ExamSchemeDao extends JpaRepository<PoExamScheme,Integer> {
             "es.exam_num," +
             "es.exam_type," +
             "es.exam_review_model," +
-            "es.ended,"+
+            "es.ended," +
+            "es.settlemented,"+
             "c.course_num " +
             "from exam_scheme AS es " +
             "LEFT JOIN exam_type AS et On et.type_num = es.exam_type " +
@@ -40,7 +41,10 @@ public interface ExamSchemeDao extends JpaRepository<PoExamScheme,Integer> {
             "es.class_num," +
             "es.teacher_num," +
             "es.exam_num," +
-            "es.exam_type,"+
+            "es.exam_type," +
+            "es.ended," +
+            "es.exam_review_model,"+
+            "es.settlemented,"+
             "c.course_num " +
             "from exam_scheme AS es " +
             "JOIN exam_type AS et On et.type_num = es.exam_type " +
@@ -48,5 +52,9 @@ public interface ExamSchemeDao extends JpaRepository<PoExamScheme,Integer> {
             "WHERE FIND_IN_SET(?1,es.class_num)>0 " ,nativeQuery = true)
     List<PoExamScheme> findAllByClassNum(String classNum);
 
+    //查询索引未分配批阅任务的考试场次(时间已结束但还未标记为已结束)
     List<PoExamScheme> findAllBySchemeEndBeforeAndEndedIsFalse(Timestamp schemeEnd);
+
+    //查询索引为期末考试但还未结算的考试场次(考试已分配任务但还未结算的)
+    List<PoExamScheme> findAllByExamType_TypeNumAndSettlementedIsFalseAndEndedIsTrue(int examTypeNum);
 }

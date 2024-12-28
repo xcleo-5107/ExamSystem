@@ -1,6 +1,7 @@
 package cn.edu.zjut.examsystem.service;
 
 import cn.edu.zjut.examsystem.Enum.ExamReviewModel;
+import cn.edu.zjut.examsystem.Enum.ExamType;
 import cn.edu.zjut.examsystem.dao.*;
 import cn.edu.zjut.examsystem.po.*;
 import jakarta.persistence.EntityManager;
@@ -18,15 +19,13 @@ import java.util.List;
 public class ExamSchemeService implements ExamSchemeServiceImpl{
     @Autowired
     private ExamSchemeDao examSchemeDao;
-
     @Autowired
-    private ExamDao examDao;
-
-    @Autowired
-    private TaskListTeacherExerciseTypeModelDao tltetDao;
+    private TaskListTeacherExerciseModelDao tlteDao;
 
     @Autowired
     private TaskListTeacherAnswerSheetModelDao tltasDao;
+
+    @Autowired CourseDao courseDao;
 
     @Autowired
     private AnswerSheetDao answerSheetDao;
@@ -36,6 +35,12 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
 
     @Autowired
     private StudentDao studentDao;
+
+    @Autowired
+    private ExamDao examDao;
+
+    @Autowired
+    private ClazzService clazzService;
 
     @Override
     public List<PoExamScheme> findAllByStr(String str) {
@@ -147,9 +152,9 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
                 examScheme.setEnded(true);
             }
 
-            //根据题型分配任务
-            //先获取该试卷的所有模块,再平均分给教师们
-            else if(examScheme.getExamReviewModel().getModelNum() == ExamReviewModel.TeacherExerciseType.getValue())
+            //根据题目分配任务
+            //先获取该试卷的所有小题,再平均分给教师们
+            else if(examScheme.getExamReviewModel().getModelNum() == ExamReviewModel.TeacherExercise.getValue())
             {
                 System.out.println("TeacherExerciseType");
                 String[] teachers = examScheme.getTeacherNum().split(",");
@@ -161,10 +166,17 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
                     System.out.println("考试安排引用的试卷不存在");
                     return;
                 }
-                List<PoExamModule> examModules = exam.getModules();
+                List<PoModuleExercise> moduleExercises = new ArrayList<>();
+                for(PoExamModule module : exam.getModules())
+                {
+                    for(PoModuleExercise moduleExercise : module.getModuleExercises())
+                    {
+                        if(!moduleExercises.contains(moduleExercise)) moduleExercises.add(moduleExercise);
+                    }
+                }
 
-                int avg = examModules.size()/teachers.length;
-                int remainder = examModules.size()%teachers.length;
+                int avg = moduleExercises.size()/teachers.length;
+                int remainder = moduleExercises.size()%teachers.length;
                 int currentTaskIndex = 0;
 
                 //根据平均数分配题目模块
@@ -174,25 +186,25 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
 
                     for(int j=0;j<avg;j++)
                     {
-                        PoTaskListTeacherExerciseTypeModel tltet = new PoTaskListTeacherExerciseTypeModel();
-                        tltet.setTeacherNum(teacherNum);
-                        tltet.setExerciseType(examModules.get(currentTaskIndex).getExerciseType());
-                        tltetDao.save(tltet);
+                        PoTaskListTeacherExerciseModel tlte = new PoTaskListTeacherExerciseModel();
+                        tlte.setTeacherNum(teacherNum);
+                        tlte.setModelExerciseId(moduleExercises.get(currentTaskIndex).getId());
+                        tlteDao.save(tlte);
 
                         currentTaskIndex++;
                     }
                 }
-                //如果有余数,说明还有模块没分配
+                //如果有余数,说明还有题目没分配
                 if(remainder != 0)
                 {
                     for(int i=0;i<remainder;i++)
                     {
                         int teacherNum = Integer.parseInt(teachers[i]);
 
-                        PoTaskListTeacherExerciseTypeModel tltet = new PoTaskListTeacherExerciseTypeModel();
-                        tltet.setTeacherNum(teacherNum);
-                        tltet.setExerciseType(examModules.get(currentTaskIndex).getExerciseType());
-                        tltetDao.save(tltet);
+                        PoTaskListTeacherExerciseModel tlte = new PoTaskListTeacherExerciseModel();
+                        tlte.setTeacherNum(teacherNum);
+                        tlte.setModelExerciseId(moduleExercises.get(currentTaskIndex).getId());
+                        tlteDao.save(tlte);
 
                         currentTaskIndex++;
                     }
@@ -201,5 +213,75 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
                 examScheme.setEnded(true);
             }
         }
+    }
+
+    @Override
+    @Transactional
+    @Scheduled(fixedRate = 5000)
+    public void autoUpdateCredit() {
+        List<PoExamScheme> examSchemes =
+                examSchemeDao.findAllByExamType_TypeNumAndSettlementedIsFalseAndEndedIsTrue(ExamType.FinalExam.getValue());
+
+        if(examSchemes == null || examSchemes.isEmpty())
+        {
+            System.out.println("未检测到需要结算的考试");
+            return;
+        }
+
+        System.out.println("检测到需要结算的考试");
+        for(PoExamScheme examScheme:examSchemes)
+        {
+            //如果考试安排都没有参加班级或指定试卷就说明数据有问题,不用结算
+            List<PoClazz> clazzes = clazzService.findAllByExamSchemeNum(examScheme.getSchemeNum());
+            if(clazzes == null || clazzes.isEmpty()) continue;
+
+            PoExam exam = examDao.findById(examScheme.getExamNum()).orElse(null);
+            if(exam == null) continue;
+
+            //判断该考试的任务分配类型以确定是否有剩余任务
+            if(examScheme.getExamReviewModel().getModelNum() == ExamReviewModel.TeacherExercise.getValue())
+            {
+                Object o = tlteDao.countAllByExamSchemeNum(examScheme.getSchemeNum());
+                if(o == null) continue;
+
+                int taskNum = (int)(long)o;
+                if(taskNum != 0) continue;
+            }
+            else if(examScheme.getExamReviewModel().getModelNum() == ExamReviewModel.TeacherAnswerSheet.getValue())
+            {
+                int taskNum = 0;
+                String[] teacherNumStr = examScheme.getTeacherNum().split(",");
+
+                for (String s : teacherNumStr) {
+                    int teacherNum = Integer.parseInt(s);
+
+                    taskNum += tltasDao.countAllByTeacherNum(teacherNum);
+                    if(taskNum != 0) continue;
+                }
+            }
+
+            PoCourse course = examScheme.getCourse();
+            if(course == null) continue;
+
+            Double credit = course.getCourseCredit();
+            for(PoClazz clazz:clazzes)
+            {
+                for(PoStudent student : clazz.getStudents())
+                {
+                    System.out.println("查询id:"+student.getStudentId());
+                    PoAnswerSheet answerSheet = answerSheetDao.findByStudentIdAndSchemeNum(student.getStudentId(),examScheme.getSchemeNum());
+                    if(answerSheet == null) continue;
+                    System.out.println("查询id:"+student.getStudentId()+" 答题表:"+answerSheet.getSheetNum());
+
+                    Double add = (double)answerSheet.getTotalScore()/ (double) exam.getTotalScore()*credit;
+                    student.setCredit(student.getCredit()+add);
+
+                    System.out.println("将id:"+student.getStudentId()+" 加:"+add);
+                }
+            }
+
+            examScheme.setSettlemented(true);
+        }
+
     }
 }

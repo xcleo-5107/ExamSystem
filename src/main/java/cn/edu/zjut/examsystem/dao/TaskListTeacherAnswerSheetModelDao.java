@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskListTeacherAnswerSheetModelDao extends JpaRepository<PoTaskListTeacherAnswerSheetModel,Integer> {
+    int countAllByTeacherNum(int teacherNum);
 }

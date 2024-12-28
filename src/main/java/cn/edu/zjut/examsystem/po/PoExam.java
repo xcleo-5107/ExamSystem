@@ -1,6 +1,8 @@
 package cn.edu.zjut.examsystem.po;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +18,15 @@ public class PoExam {
     @Id
     @Column(name = "exam_num")
     private int examNum;
+
     @Basic
     @Column(name = "is_released")
     private Byte isReleased;
+
+    @Basic
+    @NotNull
+    @Column(name = "total_score")
+    private int totalScore;
 
     @ManyToOne
     @JoinColumn(name = "teacher_num")

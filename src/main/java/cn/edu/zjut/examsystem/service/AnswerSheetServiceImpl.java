@@ -8,4 +8,6 @@ public interface AnswerSheetServiceImpl {
     List<PoAnswerSheet> findAllByExamSchemeNum(int schemeNum);
     PoAnswerSheet findBySheetNum(int num);
     PoAnswerSheet findByStudentIdAndSchemeNum(int studentId,int schemeNum);
+
+    boolean add(PoAnswerSheet answerSheet);
 }

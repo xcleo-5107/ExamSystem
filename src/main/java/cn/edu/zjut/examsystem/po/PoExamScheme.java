@@ -10,7 +10,10 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "exam_scheme", schema = "exam_system")
+@Table(name = "exam_scheme", schema = "exam_system",indexes = {
+        @Index(columnList = "scheme_end ended"),
+        @Index(columnList = "exam_type settlemented")
+})
 public class PoExamScheme {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -38,6 +41,9 @@ public class PoExamScheme {
 
     @Column(name = "ended")
     private Boolean ended;
+
+    @Column(name = "settlemented")
+    private Boolean settlemented;
 
     @ManyToOne
     @JoinColumn(name = "exam_type")

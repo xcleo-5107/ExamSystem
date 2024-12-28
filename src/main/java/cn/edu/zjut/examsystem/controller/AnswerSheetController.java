@@ -3,6 +3,7 @@ package cn.edu.zjut.examsystem.controller;
 import cn.edu.zjut.examsystem.Enum.Code;
 import cn.edu.zjut.examsystem.ResponseMessage;
 import cn.edu.zjut.examsystem.po.PoAnswerSheet;
+import cn.edu.zjut.examsystem.po.PoAnswerSheetDetail;
 import cn.edu.zjut.examsystem.service.AnswerSheetDetailService;
 import cn.edu.zjut.examsystem.service.AnswerSheetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,14 @@ public class AnswerSheetController {
     private AnswerSheetService answerSheetService;
     @Autowired
     private AnswerSheetDetailService answerSheetDetailService;
+
+
+    @PostMapping
+    public ResponseMessage<Boolean> add(@RequestBody PoAnswerSheet answerSheet)
+    {
+        if(answerSheetService.add(answerSheet)) return ResponseMessage.success("保存成功",true);
+        else return ResponseMessage.success("保存失败",false);
+    }
 
     @GetMapping("/examScheme/{examScheme}")
     public ResponseMessage<List<PoAnswerSheet>> findAllByExamScheme(@PathVariable int examScheme)
@@ -42,6 +51,22 @@ public class AnswerSheetController {
 
         if(answerSheet == null) return new ResponseMessage<>(Code.FAIL,"未查询到有效目标",null);
         else return new ResponseMessage<>(Code.SUCCESS,"查询成功",answerSheet);
+    }
+
+    @GetMapping("/schemeNum/{schemeNum}/exerciseTypeNum/{exerciseTypeNum}")
+    public ResponseMessage<List<PoAnswerSheetDetail>> findAllBySheetNumAndExerciseTypeNum(@PathVariable int schemeNum,@PathVariable int exerciseTypeNum)
+    {
+        List<PoAnswerSheetDetail> answerSheetDetails = answerSheetDetailService.findAllBySchemeNumAndExerciseType(schemeNum, exerciseTypeNum);
+        if(answerSheetDetails == null || answerSheetDetails.isEmpty()) return ResponseMessage.fail("未查询到有效数据",null);
+        else return ResponseMessage.success("查询成功",answerSheetDetails);
+    }
+
+    @GetMapping("/moduleExerciseId/{moduleExerciseId}")
+    public ResponseMessage<List<PoAnswerSheetDetail>> findAllByModuleExerciseId(@PathVariable int moduleExerciseId)
+    {
+        List<PoAnswerSheetDetail> answerSheetDetails = answerSheetDetailService.findAllByModuleExerciseId(moduleExerciseId);
+        if(answerSheetDetails == null || answerSheetDetails.isEmpty()) return ResponseMessage.fail("未查询到有效数据",null);
+        else return ResponseMessage.success("查询成功",answerSheetDetails);
     }
 
     @PutMapping("/detailId/{detailId}/score/{score}")

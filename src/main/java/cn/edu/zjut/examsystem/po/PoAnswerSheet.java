@@ -26,10 +26,12 @@ public class PoAnswerSheet {
     @Column(name = "total_score")
     private Integer totalScore;
 
-    @OneToMany
+    //这种需要在添加答题表时一并添加的需要cascade = CascadeType.ALL开启级联更新
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "sheet_num")
     private List<PoAnswerSheetDetail> answerSheetDetails;
 
+    //引用的数据不需要级联,以免引用一个不存在的数据时也去新建一个
     @ManyToOne
     @JoinColumn(name = "sheet_status")
     private PoAnswerSheetStatusType statusType;

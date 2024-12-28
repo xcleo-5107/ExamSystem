@@ -18,7 +18,8 @@ public interface ExamDao extends JpaRepository<PoExam, Integer> {
     @Query(value = "select e.exam_num," +
             "e.is_released,"+
             "c.course_num," +
-            "t.teacher_num " +
+            "t.teacher_num," +
+            "e.total_score " +
             "from exam e " +
             "LEFT JOIN exam_module AS em ON e.exam_num = em.exam_num " +
             "LEFT JOIN module_exercise AS me ON me.module_num = em.module_num " +

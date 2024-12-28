@@ -13,4 +13,5 @@ public interface ExamSchemeServiceImpl {
     Boolean add(PoExamScheme examScheme);
 
     void autoUpdateScheme();//自动更新考试安排状态
+    void autoUpdateCredit();//自动添加学分
 }
