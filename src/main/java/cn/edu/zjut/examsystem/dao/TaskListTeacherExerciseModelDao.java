@@ -18,4 +18,6 @@ public interface TaskListTeacherExerciseModelDao extends JpaRepository<PoTaskLis
             "join exam_scheme as es on es.exam_num = e.exam_num " +
             "where es.scheme_num = ?1 ",nativeQuery = true)
     Object countAllByExamSchemeNum(int schemeNum);
+
+    List<PoTaskListTeacherExerciseModel> findAllByTeacherNum(int teacherNum);
 }
