@@ -53,18 +53,10 @@ public class AnswerSheetController {
         else return new ResponseMessage<>(Code.SUCCESS,"查询成功",answerSheet);
     }
 
-    @GetMapping("/schemeNum/{schemeNum}/exerciseTypeNum/{exerciseTypeNum}")
-    public ResponseMessage<List<PoAnswerSheetDetail>> findAllBySheetNumAndExerciseTypeNum(@PathVariable int schemeNum,@PathVariable int exerciseTypeNum)
+    @GetMapping("/moduleExerciseId/{moduleExerciseId}/examSchemeNum/{examSchemeNum}")
+    public ResponseMessage<List<PoAnswerSheetDetail>> findAllByModuleExerciseIdAndExamSchemeNum(@PathVariable int moduleExerciseId,@PathVariable int examSchemeNum)
     {
-        List<PoAnswerSheetDetail> answerSheetDetails = answerSheetDetailService.findAllBySchemeNumAndExerciseType(schemeNum, exerciseTypeNum);
-        if(answerSheetDetails == null || answerSheetDetails.isEmpty()) return ResponseMessage.fail("未查询到有效数据",null);
-        else return ResponseMessage.success("查询成功",answerSheetDetails);
-    }
-
-    @GetMapping("/moduleExerciseId/{moduleExerciseId}")
-    public ResponseMessage<List<PoAnswerSheetDetail>> findAllByModuleExerciseId(@PathVariable int moduleExerciseId)
-    {
-        List<PoAnswerSheetDetail> answerSheetDetails = answerSheetDetailService.findAllByModuleExerciseId(moduleExerciseId);
+        List<PoAnswerSheetDetail> answerSheetDetails = answerSheetDetailService.findAllByModuleExerciseIdAndExamSchemeNum(moduleExerciseId,examSchemeNum);
         if(answerSheetDetails == null || answerSheetDetails.isEmpty()) return ResponseMessage.fail("未查询到有效数据",null);
         else return ResponseMessage.success("查询成功",answerSheetDetails);
     }

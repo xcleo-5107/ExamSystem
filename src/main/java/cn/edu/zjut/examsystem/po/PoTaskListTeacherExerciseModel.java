@@ -22,16 +22,20 @@ public class PoTaskListTeacherExerciseModel {
     @Column(name = "model_exercise_id")
     private Integer modelExerciseId;
 
+    @Basic
+    @Column(name = "exam_scheme_num")
+    private Integer examSchemeNum;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PoTaskListTeacherExerciseModel that = (PoTaskListTeacherExerciseModel) o;
-        return id == that.id && Objects.equals(teacherNum, that.teacherNum) && Objects.equals(modelExerciseId, that.modelExerciseId);
+        return id == that.id && Objects.equals(examSchemeNum, that.examSchemeNum) && Objects.equals(teacherNum, that.teacherNum) && Objects.equals(modelExerciseId, that.modelExerciseId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, teacherNum, modelExerciseId);
+        return Objects.hash(id, teacherNum,examSchemeNum, modelExerciseId);
     }
 }

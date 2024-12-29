@@ -189,6 +189,7 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
                         PoTaskListTeacherExerciseModel tlte = new PoTaskListTeacherExerciseModel();
                         tlte.setTeacherNum(teacherNum);
                         tlte.setModelExerciseId(moduleExercises.get(currentTaskIndex).getId());
+                        tlte.setExamSchemeNum(examScheme.getSchemeNum());
                         tlteDao.save(tlte);
 
                         currentTaskIndex++;
@@ -204,6 +205,7 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
                         PoTaskListTeacherExerciseModel tlte = new PoTaskListTeacherExerciseModel();
                         tlte.setTeacherNum(teacherNum);
                         tlte.setModelExerciseId(moduleExercises.get(currentTaskIndex).getId());
+                        tlte.setExamSchemeNum(examScheme.getSchemeNum());
                         tlteDao.save(tlte);
 
                         currentTaskIndex++;
@@ -256,8 +258,10 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
                     int teacherNum = Integer.parseInt(s);
 
                     taskNum += tltasDao.countAllByTeacherNum(teacherNum);
-                    if(taskNum != 0) continue;
+                    if(taskNum != 0) break;
                 }
+
+                if(taskNum!=0) continue;
             }
 
             PoCourse course = examScheme.getCourse();
@@ -284,4 +288,6 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
         }
 
     }
+
+
 }

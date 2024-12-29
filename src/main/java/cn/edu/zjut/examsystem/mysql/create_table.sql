@@ -230,7 +230,8 @@ CREATE TABLE task_list_teacher_exercise_model
 (
 id INT AUTO_INCREMENT PRIMARY KEY,	-- 为了给jpa接管做的id,没有实际含义
 teacher_num INT,
-model_exercise_id INT
+model_exercise_id INT,
+exam_scheme_num INT
 );
 
 

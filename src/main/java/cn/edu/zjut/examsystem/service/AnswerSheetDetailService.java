@@ -40,12 +40,7 @@ public class AnswerSheetDetailService implements AnswerSheetDetailServiceImpl{
     }
 
     @Override
-    public List<PoAnswerSheetDetail> findAllBySchemeNumAndExerciseType(int schemeNum, int exerciseTypeNum) {
-        return answerSheetDetailDao.findAllBySchemeNumAndExerciseType(schemeNum,exerciseTypeNum);
-    }
-
-    @Override
-    public List<PoAnswerSheetDetail> findAllByModuleExerciseId(int moduleExerciseId) {
-        return answerSheetDetailDao.findAllByModuleExercise_Id(moduleExerciseId);
+    public List<PoAnswerSheetDetail> findAllByModuleExerciseIdAndExamSchemeNum(int moduleExerciseId,int examSchemeNum) {
+        return answerSheetDetailDao.findAllByModuleExerciseIdAndExamSchemeNum(moduleExerciseId,examSchemeNum);
     }
 }

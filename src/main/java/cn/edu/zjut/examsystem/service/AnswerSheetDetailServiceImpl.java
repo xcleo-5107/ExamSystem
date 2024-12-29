@@ -7,6 +7,5 @@ import java.util.List;
 public interface AnswerSheetDetailServiceImpl {
     int saveScore(int detailId,int score);
 
-    List<PoAnswerSheetDetail> findAllBySchemeNumAndExerciseType(int schemeNum,int exerciseTypeNum);
-    List<PoAnswerSheetDetail> findAllByModuleExerciseId(int moduleExerciseId);
+    List<PoAnswerSheetDetail> findAllByModuleExerciseIdAndExamSchemeNum(int moduleExerciseId,int examSchemeNum);
 }
