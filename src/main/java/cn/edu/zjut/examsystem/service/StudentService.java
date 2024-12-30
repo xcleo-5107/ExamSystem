@@ -1,5 +1,6 @@
 package cn.edu.zjut.examsystem.service;
 
+import cn.edu.zjut.examsystem.dao.ClazzDao;
 import cn.edu.zjut.examsystem.dao.StudentDao;
 import cn.edu.zjut.examsystem.po.PoClazz;
 import cn.edu.zjut.examsystem.po.PoStudent;
@@ -19,6 +20,8 @@ public class StudentService implements StudentServiceImpl{
     private EntityManager entityManager;
     @Autowired
     private StudentDao studentDao;
+    @Autowired
+    private ClazzDao clazzDao;
 
     @Override
     public PoStudent findByStudentId(int id) {
@@ -49,16 +52,33 @@ public class StudentService implements StudentServiceImpl{
         return true;
     }
 
+    @Transactional
     @Override
     public Boolean alter(PoStudent student) {
         studentDao.save(student);
         return true;
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(int id) {
+
         if(!studentDao.existsById(id)) return false;
-        else studentDao.deleteById(id);
+        else
+        {
+            PoStudent student = studentDao.findById(id).orElse(null);
+
+            List<PoClazz> clazzes = clazzDao.findAllByStudents_StudentId(id);
+            if(clazzes!=null && !clazzes.isEmpty())
+            {
+                for(PoClazz clazz:clazzes)
+                {
+                    clazz.getStudents().remove(student);
+                }
+            }
+
+            studentDao.deleteById(id);
+        }
 
         return true;
     }

@@ -39,6 +39,7 @@ public class TeacherService implements TeacherServiceImpl{
         return true;
     }
 
+    @Transactional
     @Override
     public Boolean deleteById(int id) {
         if(!teacherDao.existsById(id)) return false;

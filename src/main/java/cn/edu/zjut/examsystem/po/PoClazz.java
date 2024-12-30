@@ -28,7 +28,7 @@ public class PoClazz {
     @Column(name = "class_time")
     private String classTime;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name="class_student",
             joinColumns = @JoinColumn(name="class_num"),
@@ -36,7 +36,7 @@ public class PoClazz {
     )
     private Set<PoStudent> students;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "class_teacher",
             joinColumns = @JoinColumn(name = "class_num"),

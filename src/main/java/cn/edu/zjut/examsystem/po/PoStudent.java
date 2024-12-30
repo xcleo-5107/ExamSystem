@@ -38,7 +38,7 @@ public class PoStudent {
     private String semester;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "students")
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "students")
     private List<PoClazz> clazzes;
 
     @ManyToOne

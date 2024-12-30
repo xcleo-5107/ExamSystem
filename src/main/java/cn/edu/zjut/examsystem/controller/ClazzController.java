@@ -55,13 +55,12 @@ public class ClazzController {
         return ResponseMessage.success("查询成功",clazzes);
     }
 
-    @PutMapping("/classNum/{classNum}/studentId/{studentId}")
+    @DeleteMapping("/classNum/{classNum}/studentId/{studentId}")
     public ResponseMessage<Boolean> deleteStudentByStudentId(@PathVariable int classNum,@PathVariable int studentId)
     {
         boolean res = clazzService.deleteStudentByStudentId(classNum,studentId);
         if(!res) return new ResponseMessage<>(Code.FAIL,"修改失败,目标不存在或在此期间已被更改",false);
         else return new ResponseMessage<>(Code.SUCCESS,"修改成功",true);
     }
-
 
 }
