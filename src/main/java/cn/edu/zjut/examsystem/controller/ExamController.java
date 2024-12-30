@@ -2,6 +2,7 @@ package cn.edu.zjut.examsystem.controller;
 
 import cn.edu.zjut.examsystem.Enum.Code;
 import cn.edu.zjut.examsystem.ResponseMessage;
+import cn.edu.zjut.examsystem.dto.AutoCreateExamDto;
 import cn.edu.zjut.examsystem.po.PoExam;
 import cn.edu.zjut.examsystem.service.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,14 @@ public class ExamController {
     public ResponseMessage<Boolean> add(@RequestBody PoExam exam)
     {
         return new ResponseMessage<>(Code.SUCCESS,"添加成功",examService.add(exam));
+    }
+
+    @PostMapping("/autoCreateExam")
+    private ResponseMessage<PoExam> autoCreateExam(@RequestBody AutoCreateExamDto autoCreateExamDto)
+    {
+        PoExam exam = examService.autoCreateExam(autoCreateExamDto);
+        if(exam == null) return ResponseMessage.fail("设置的参数在中数据库不存在",null);
+        else return ResponseMessage.success("生成成功",exam);
     }
 
     @GetMapping("/examNum/{examNum}")

@@ -22,6 +22,10 @@ public class PoModuleExercise {
     @Column(name = "exercise_in_module_num")
     private Integer exerciseInModuleNum;
 
+    @Basic
+    @Column(name = "max_score")
+    private Integer maxScore;
+
     @ManyToOne
     @JoinColumn(name = "exercise_num")
     private PoExercise exercise;
