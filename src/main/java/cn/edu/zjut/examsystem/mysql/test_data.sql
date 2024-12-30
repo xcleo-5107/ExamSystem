@@ -107,7 +107,7 @@ INSERT INTO class_student(class_num, student_id) VALUES
 INSERT INTO exercise_type(type_name) VALUES
 ("选择题"),
 ("主观题"),
-("听力选择题");
+("多选题");
 
 -- 题目
 INSERT INTO exercise(type_num,course_num,exercise_info,exercise_problem,exercise_answer) VALUES

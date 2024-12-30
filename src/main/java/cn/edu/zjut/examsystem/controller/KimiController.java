@@ -7,9 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import okhttp3.Response;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -24,8 +22,8 @@ public class KimiController {
     private List<Message> messages = new ArrayList<>();
 
     @Operation(summary = "聊天")
-    @GetMapping("/chat")
-    public SseEmitter chat(String content, HttpSession session) throws IOException {
+    @PostMapping("/chat")
+    public SseEmitter chat(@RequestBody String content, HttpSession session) throws IOException {
         List<Message> messages = (List<Message>) session.getAttribute("messages");
         if (messages == null) {
             messages = new ArrayList<>();
