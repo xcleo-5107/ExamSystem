@@ -27,11 +27,11 @@ public class PoTeacher {
     @Column(name = "teacher_sex")
     private String teacherSex;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "teachers")
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "teachers")
     @JsonIgnore
     private Set<PoClazz> clazzes;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "teachers")
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "teachers")
     @JsonIgnore
     private Set<PoCourse> courses;
 

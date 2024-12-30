@@ -15,6 +15,12 @@ public class ClazzController {
     @Autowired
     private ClazzService clazzService;
 
+    @PostMapping
+    public ResponseMessage<Boolean> add(@RequestBody PoClazz clazz)
+    {
+        return ResponseMessage.success("添加新班级数据成功",clazzService.add(clazz));
+    }
+
     @GetMapping
     public ResponseMessage<List<PoClazz>> findAll()
     {
@@ -55,10 +61,32 @@ public class ClazzController {
         return ResponseMessage.success("查询成功",clazzes);
     }
 
+    @PutMapping("/classNum/{classNum}/studentId/{studentId}")
+    public ResponseMessage<Boolean> addStudent(@PathVariable int classNum,@PathVariable int studentId)
+    {
+        if(clazzService.addStudent(classNum,studentId)) return ResponseMessage.success("添加学生成功",true);
+        else return ResponseMessage.fail("添加失败",false);
+    }
+
+    @PutMapping("/classNum/{classNum}/teacherNum/{teacherNum}")
+    public ResponseMessage<Boolean> addTeacher(@PathVariable int classNum,@PathVariable int teacherNum)
+    {
+        if(clazzService.addTeacher(classNum,teacherNum)) return ResponseMessage.success("添加老师成功",true);
+        else return ResponseMessage.fail("添加失败",false);
+    }
+
     @DeleteMapping("/classNum/{classNum}/studentId/{studentId}")
     public ResponseMessage<Boolean> deleteStudentByStudentId(@PathVariable int classNum,@PathVariable int studentId)
     {
         boolean res = clazzService.deleteStudentByStudentId(classNum,studentId);
+        if(!res) return new ResponseMessage<>(Code.FAIL,"修改失败,目标不存在或在此期间已被更改",false);
+        else return new ResponseMessage<>(Code.SUCCESS,"修改成功",true);
+    }
+
+    @DeleteMapping("/classNum/{classNum}/teacherNum/{teacherNum}")
+    public ResponseMessage<Boolean> deleteTeacherByTeacherNum(@PathVariable int classNum,@PathVariable int teacherNum)
+    {
+        boolean res = clazzService.deleteTeacherByTeacherNum(classNum,teacherNum);
         if(!res) return new ResponseMessage<>(Code.FAIL,"修改失败,目标不存在或在此期间已被更改",false);
         else return new ResponseMessage<>(Code.SUCCESS,"修改成功",true);
     }

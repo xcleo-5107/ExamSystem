@@ -1,13 +1,8 @@
 package cn.edu.zjut.examsystem.service;
 
-import cn.edu.zjut.examsystem.dao.ClazzDao;
-import cn.edu.zjut.examsystem.dao.ExamDao;
-import cn.edu.zjut.examsystem.dao.ExamSchemeDao;
-import cn.edu.zjut.examsystem.dao.StudentDao;
-import cn.edu.zjut.examsystem.po.PoClazz;
-import cn.edu.zjut.examsystem.po.PoExam;
-import cn.edu.zjut.examsystem.po.PoExamScheme;
-import cn.edu.zjut.examsystem.po.PoStudent;
+import cn.edu.zjut.examsystem.dao.*;
+import cn.edu.zjut.examsystem.po.*;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +22,10 @@ public class ClazzService implements ClazzServiceImpl{
 
     @Autowired
     private ExamSchemeDao examSchemeDao;
+    @Autowired
+    private EntityManager entityManager;
+    @Autowired
+    private TeacherDao teacherDao;
 
     @Override
     public List<PoClazz> findAllByClazzesStr(String targets) {
@@ -81,5 +80,54 @@ public class ClazzService implements ClazzServiceImpl{
         boolean res = clazz.getStudents().remove(target);
         clazzDao.save(clazz);
         return res;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteTeacherByTeacherNum(int clazzNum,int teacherNum) {
+        PoClazz clazz = clazzDao.findById(clazzNum).orElse(null);
+        if(clazz == null) return false;
+
+        PoTeacher target = teacherDao.findById(teacherNum).orElse(null);
+        if(target == null) return false;
+
+        boolean res = clazz.getTeachers().remove(target);
+        clazzDao.save(clazz);
+        return res;
+    }
+
+    @Transactional
+    @Override
+    public boolean add(PoClazz clazz) {
+        entityManager.persist(clazz);
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean addStudent(int clazzNum, int studentId) {
+        PoStudent student = studentDao.findById(studentId).orElse(null);
+        if(student == null) return false;
+
+        PoClazz clazz = clazzDao.findById(clazzNum).orElse(null);
+        if(clazz == null) return false;
+
+        if(!clazz.getStudents().contains(student)) clazz.getStudents().add(student);
+
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean addTeacher(int clazzNum, int teacherNum) {
+        PoTeacher teacher = teacherDao.findById(teacherNum).orElse(null);
+        if(teacher == null) return false;
+
+        PoClazz clazz = clazzDao.findById(clazzNum).orElse(null);
+        if(clazz == null) return false;
+
+        if(!clazz.getTeachers().contains(teacher)) clazz.getTeachers().add(teacher);
+
+        return true;
     }
 }

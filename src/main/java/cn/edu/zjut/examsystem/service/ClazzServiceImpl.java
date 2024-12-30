@@ -16,4 +16,8 @@ public interface ClazzServiceImpl {
     PoClazz findById(int id);
 
     boolean deleteStudentByStudentId(int clazzNum,int StudentId);
+    boolean deleteTeacherByTeacherNum(int clazzNum,int teacherNum);
+    boolean add(PoClazz clazz);
+    boolean addStudent(int clazzNum,int studentId);
+    boolean addTeacher(int clazzNum,int teacherNum);
 }
