@@ -14,6 +14,7 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import okhttp3.*;
 import org.springframework.data.domain.Limit;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -83,7 +84,7 @@ public class MoonshotAiUtils {
     }
 
     @SneakyThrows
-    public static String chat(@NonNull String model, @NonNull List<Message> messages) {
+    public static SseEmitter chat(@NonNull String model, @NonNull List<Message> messages) {
         /*
         StringBuilder sb = new StringBuilder();
         String requestBody = new JSONObject()
@@ -98,8 +99,8 @@ public class MoonshotAiUtils {
                 .build();
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(30,TimeUnit.SECONDS) // 设置连接超时为30秒
-                .readTimeout(30,TimeUnit.SECONDS) // 设置读取超时为30秒
+                .connectTimeout(30, TimeUnit.SECONDS) // 设置连接超时为30秒
+                .readTimeout(30, TimeUnit.SECONDS) // 设置读取超时为30秒
                 .build();
 
         Call call = client.newCall(okhttpRequest);
@@ -136,39 +137,50 @@ public class MoonshotAiUtils {
             IoUtil.close(reader);
         }*/
 
-
-
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(300,TimeUnit.SECONDS)
-                .readTimeout(300,TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build();
-        // 构建请求体
+
         String requestBody = new JSONObject()
                 .putOpt("model", model)
                 .putOpt("messages", messages)
                 .putOpt("stream", true)
                 .toString();
 
-        // 创建OkHttp请求
         Request request = new Request.Builder()
                 .url(CHAT_COMPLETION_URL)
-                .post(RequestBody.create(requestBody, MediaType.get("application/json; charset=utf-8")))
+                .post(RequestBody.create(requestBody, MediaType.get(ContentType.JSON.getValue())))
                 .addHeader("Authorization", "Bearer " + API_KEY)
                 .build();
 
-        // 发送请求并获取响应
-        try (Response response = client.newCall(request).execute()) {
-            // 确保响应成功
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                emitter.completeWithError(e);
             }
 
-            // 直接返回响应体
-            return response.body().string();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null; // 或者根据需要处理异常
-        }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    emitter.completeWithError(new IOException("Unexpected code " + response));
+                    return;
+                }
+                try (BufferedReader reader = new BufferedReader(response.body().charStream())) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        if (!line.trim().isEmpty()) {
+                            emitter.send(SseEmitter.event().data(line + "\n"));
+                        }
+                    }
+                    emitter.complete();
+                } catch (IOException e) {
+                    emitter.completeWithError(e);
+                }
+            }
+        });
+        return emitter;
     }
 
     private static HttpRequest getCommonRequest(@NonNull String url) {

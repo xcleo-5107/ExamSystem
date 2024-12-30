@@ -6,10 +6,13 @@ import cn.edu.zjut.examsystem.bean.Message;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
+import okhttp3.Response;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class KimiController {
 
     @Operation(summary = "聊天")
     @GetMapping("/chat")
-    public String chat(String content, HttpSession session) {
+    public SseEmitter chat(String content, HttpSession session) throws IOException {
         List<Message> messages = (List<Message>) session.getAttribute("messages");
         if (messages == null) {
             messages = new ArrayList<>();
@@ -30,6 +33,8 @@ public class KimiController {
         }
         Message message = new Message(RoleEnum.user.name(), content);
         messages.add(message);
+
+
         return MoonshotAiUtils.chat("moonshot-v1-128k", messages);
     }
 }
