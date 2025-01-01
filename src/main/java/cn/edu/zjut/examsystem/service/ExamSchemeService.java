@@ -89,7 +89,7 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
         entityManager.persist(examScheme);
         return true;
     }
-/*
+
     @Scheduled(fixedRate = 10000)
     @Transactional
     @Override
@@ -288,6 +288,5 @@ public class ExamSchemeService implements ExamSchemeServiceImpl{
         }
 
     }
-*/
 
 }

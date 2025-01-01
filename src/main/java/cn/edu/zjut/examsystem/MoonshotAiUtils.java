@@ -13,6 +13,7 @@ import cn.hutool.json.JSONUtil;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import okhttp3.*;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.data.domain.Limit;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -24,7 +25,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class MoonshotAiUtils {
-    private static final String API_KEY = "sk-QqUsWLQVXlA0L9nGqnB1ibLoJux2BsLjmMWkZuNQzjkVtbb9";
+    private static final String API_KEY = "sk-iNqBGtzhy49iH8NYKz5kttNjmjZhZ5Ue3Y3L5Af7AQ2xNyQp";
     private static final String MODELS_URL = "https://api.moonshot.cn/v1/models";
     private static final String FILES_URL = "https://api.moonshot.cn/v1/files";
     private static final String ESTIMATE_TOKEN_COUNT_URL = "https://api.moonshot.cn/v1/tokenizers/estimate-token-count";
